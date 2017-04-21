@@ -201,14 +201,13 @@ var Cropbox = (function(window, document) {
             self._image.src = this.src;
         });
     };
-    // TODO: REFACTORING
     Cropbox.prototype._attachSelectFromFileEvent = function() {
         var self = this;
         this._inputFile.addEventListener(EVENT_CHANGE, function() {
             var fileReader = new FileReader();
             fileReader.readAsDataURL(this.files[0]);
-            fileReader.addEventListener(EVENT_LOAD, function(fRE) {
-                self._sourceImage.src = fRE.target.result;
+            fileReader.addEventListener(EVENT_LOAD, function(event) {
+                self._sourceImage.src = event.target.result;
             });
         });
     };
