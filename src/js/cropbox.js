@@ -1,4 +1,4 @@
-var Cropbox = (function(window, document) {
+;var Cropbox = (function(window, document) {
     "use strict";  
     // const
     var VERSION = '0.9.0',
