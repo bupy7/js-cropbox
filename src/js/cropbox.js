@@ -1,14 +1,11 @@
-// https://github.com/jeromeetienne/microevent.js
-// mouse wheel - ?
 var Cropbox = (function(window, document) {
-    "use strict";
-    
+    "use strict";  
     // const
-    var VERSION = '1.0.0',
+    var VERSION = '0.9.0',
         EVENT_MOUSE_DOWN = 'mousedown',
         EVENT_MOUSE_MOVE = 'mousemove',
         EVENT_MOUSE_UP = 'mouseup',
-        EVENT_MOUSE_WHEEL = 'mousewheel',
+        EVENT_MOUSE_WHEEL = 'wheel',
         EVENT_RESIZE = 'resize',
         EVENT_CHANGE = 'change',
         EVENT_LOAD = 'load',
@@ -74,6 +71,10 @@ var Cropbox = (function(window, document) {
         /**
          * @type {HTMLElement}
          */
+        this._messageBlock = null;
+        /**
+         * @type {HTMLElement}
+         */
         this._resultContainer = null;
         /**
          * @type {HTMLElement}
@@ -112,9 +113,21 @@ var Cropbox = (function(window, document) {
          */
         this._sourceImage = new Image;
         /**
+         * @type {Object}
+         */
+        this._imageOptions = {};
+        /**
+         * @type {Array}
+         */
+        this._messages = [];
+        /**
          * @type {integer}
          */
         this._ratio = 1;
+        /**
+         * @type {Array}
+         */
+        this._variants = [];
         /**
          * @type {integer}
          */
@@ -239,15 +252,13 @@ var Cropbox = (function(window, document) {
             self._addInfo(info);
             var cImg = document.createElement('img');
             for (var name in self._imageOptions) {
-                cImg[name] = self._imageOptions[name];
+                cImg.setAttribute(name, self._imageOptions[name]);
             }
             cImg.src = image;
             self._addToContainer(cImg);
             if (self._nextVariant()) {
                 self._nextMessage();
             }
-            // TODO
-            // this.trigger('cb.cropped', [info]);
         });
     };
     Cropbox.prototype._initFrame = function() {
@@ -453,19 +464,17 @@ var Cropbox = (function(window, document) {
             self._initFrame();
         });
     };
-    // TODO
     Cropbox.prototype._attachImageMouseWheelEvent = function() {
         var self = this;
         this._membrane.addEventListener(EVENT_MOUSE_WHEEL, function(event) {
-//            if (event.deltaY > 0) {
-//                self._zoomIn();
-//            } else {
-//                self._zoomOut();
-//            }
-//            event.preventDefault ? event.preventDefault() : (event.returnValue = false);
+            if (event.deltaY < 0) {
+                self._zoomIn();
+            } else {
+                self._zoomOut();
+            }
+            event.preventDefault ? event.preventDefault() : (event.returnValue = false);
         });
     };
-    // TODO
     Cropbox.prototype._zoomIn = function() {
         this._ratio *= 1.01;
         var width = this._sourceImage.width * this._ratio,
@@ -473,7 +482,6 @@ var Cropbox = (function(window, document) {
         this._zoom(width, height);
         this._refrashPosFrame(this._frame.offsetLeft, this._frame.offsetTop);
     };
-    // TODO
     Cropbox.prototype._zoomOut = function() {
         var oldRatio = this._ratio;
         this._ratio *= 0.99;
@@ -486,10 +494,13 @@ var Cropbox = (function(window, document) {
             this._ratio = oldRatio;
         }
     };
-    // TODO
+    /**
+     * @param {number} width
+     * @param {number} height
+     */
     Cropbox.prototype._zoom = function(width, height) {
-        this._image.style.width = width;
-        this._image.style.height = height;
+        this._image.style.width = width + 'px';
+        this._image.style.height = height + 'px';
         this._frame.style.backgroundSize = width + 'px ' + height + 'px';
     };
     Cropbox.prototype._initRatio = function() {
