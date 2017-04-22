@@ -8,7 +8,6 @@
         EVENT_MOUSE_UP = 'mouseup',
         EVENT_MOUSE_WHEEL = 'wheel',
         EVENT_RESIZE = 'resize',
-        EVENT_CHANGE = 'change',
         EVENT_LOAD = 'load',
         EVENT_CLICK = 'click';
     
@@ -53,14 +52,7 @@
         /**
          * @param {String} src
          */
-        loadImage: function(src) {
-            var self = this;
-            this._sourceImage.addEventListener(EVENT_LOAD, function() {
-                self._image.addEventListener(EVENT_LOAD, function() {
-                    self._start();
-                });
-                self._image.src = this.src;
-            });
+        loadFromSrc: function(src) {
             this._sourceImage.src = src;
         },
         reset: function() {
@@ -96,10 +88,6 @@
              * @type {HTMLElement}
              */
             this._cb = null;
-            /**
-             * @type {HTMLElement}
-             */
-            this._inputFile = null;
             /**
              * @type {HTMLElement}
              */
@@ -184,7 +172,6 @@
             // init
             var properties = [
                     'cb',
-                    'inputFile',
                     'inputInfo',
                     'btnReset',
                     'btnCrop',
@@ -225,12 +212,10 @@
             this._attachImageMouseWheelEvent();
             // window resize
             this._attachResizeWorkareaEvent();
-            // select image from file
-            this._attachSelectFromFileEvent();
+            // attach load image
+            this._attachLoadImageEvent();
             // crop image
             this._attachCropImageEvent();
-            // reset button
-            this._attachResetEvent();
         },
         _initFrame: function() {
             var variant = this._getCurrentVariant(),
@@ -257,14 +242,15 @@
             }
             this._zoom(this._sourceImage.width * this._ratio, this._sourceImage.height * this._ratio);
         },
-        _attachSelectFromFileEvent: function() {
+        _attachLoadImageEvent: function() {
             var self = this;
-            this._inputFile.addEventListener(EVENT_CHANGE, function() {
-                var fileReader = new FileReader();
-                fileReader.readAsDataURL(this.files[0]);
-                fileReader.addEventListener(EVENT_LOAD, function(event) {
-                    self.loadImage(event.target.result);
+            this._sourceImage.addEventListener(EVENT_LOAD, function() {
+                console.log('load source image');
+                self._image.addEventListener(EVENT_LOAD, function() {
+                    console.log('load image');
+                    self._start();
                 });
+                self._image.src = this.src;
             });
         },
         _attachCropImageEvent: function() {
@@ -291,7 +277,7 @@
                         self._image.clientWidth,
                         self._image.clientHeight
                     );
-                var image = canvas.toDataURL('image/png'),
+                var imageData = canvas.toDataURL('image/png'),
                     info = {
                         sWidth: self._sourceImage.width,
                         sHeight: self._sourceImage.height,
@@ -302,15 +288,15 @@
                         ratio: self._ratio,
                         width: frameWidth,
                         height: frameHeight,
-                        image: image
+                        image: imageData
                     };
                 self._addInfo(info);
-                var cImg = document.createElement('img');
+                var image = document.createElement('img');
                 for (var name in self._imageOptions) {
-                    cImg.setAttribute(name, self._imageOptions[name]);
+                    image.setAttribute(name, self._imageOptions[name]);
                 }
-                cImg.src = image;
-                self._addToContainer(cImg);
+                image.src = imageData;
+                self._addToContainer(image);
                 if (self._nextVariant()) {
                     self._nextMessage();
                 }
@@ -431,12 +417,6 @@
                     self.zoomOut();
                 }
                 event.preventDefault ? event.preventDefault() : (event.returnValue = false);
-            });
-        },
-        _attachResetEvent: function() {
-            var self = this;
-            this._btnReset.addEventListener(EVENT_CLICK, function() {
-                self.reset();
             });
         },
         /**
