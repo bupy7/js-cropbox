@@ -363,7 +363,7 @@
                     self._refrashPosFrame(
                         parseFloat(getComputedStyle(self._frame)['left']),
                         parseFloat(getComputedStyle(self._frame)['top'])
-                        );
+                    );
                 }
             });
         },
