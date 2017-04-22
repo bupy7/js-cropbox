@@ -87,7 +87,6 @@
                     </a>
                 </p>
             </div>
-            <div id="message" class="alert alert-info"></div> 
             <div id="plugin" class="cropbox">
                 <div class="workarea-cropbox">
                     <div class="bg-cropbox">
@@ -109,11 +108,11 @@
                 <div class="form-group">
                     <div class="input-group">
                         <span class="input-group-btn">
-                            <button class="btn btn-default btn-from-url" type="button">
-                                <i class="glyphicon glyphicon-link"></i> Load
+                            <button class="btn btn-default btn-from-uri" type="button">
+                                <i class="glyphicon glyphicon-download"></i> Download
                             </button>
                         </span>
-                        <input type="text" name="url" class="form-control" placeholder="Image link">
+                        <input type="text" name="uri" class="form-control" placeholder="Image link">
                     </div>
                 </div>
                 <div class="form-group">
@@ -133,13 +132,16 @@
                     </div>
                 </div>
             </div>
-            <div class="cropped panel panel-default">
+            <br>
+            <div id="cropped-container" class="panel panel-success">
                 <div class="panel-heading"><h3 class="panel-title">Result of cropping</h3></div>
-                <div class="panel-body">...</div>
+                <div class="panel-body"></div>
             </div>
-            <div class="form-group">
-                <label>Info of cropping</label>
-                <textarea class="data form-control" rows="5"></textarea>
+            <div class="panel panel-info">
+                <div class="panel-heading"><h3 class="panel-title">Info of cropping</h3></div>
+                <div class="panel-body">
+                    <textarea id="data" class="form-control" rows="5"></textarea>
+                </div>
             </div>
             <h2>Source code of example</h2>
             <h4>CSS</h4>
@@ -153,16 +155,7 @@
         <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="bower_components/js-cropbox/src/js/cropbox.js"></script>
         <script type="text/javascript">
-            var cropbox = new Cropbox({
-                cb: '#plugin',
-                inputInfo: 'textarea.data',
-                btnCrop: '.btn-crop',
-                resultContainer: '.cropped',
-                messageBlock: '#message',
-                imageOptions: {
-                    class: 'img-thumbnail',
-                    style: 'margin-right: 5px; margin-bottom: 5px'
-                },
+            var cropbox = new Cropbox('#plugin', {
                 variants: [
                     {
                         width: 200,
@@ -176,12 +169,9 @@
                         width: 150,
                         height: 200
                     }
-                ],
-                messages: [
-                    'Crop a middle image.',
-                    'Crop a small image.'
                 ]
             });
+            // zooming
             var zoomInBtn = document.querySelector('.btn-zoom-in');
             zoomInBtn.addEventListener('click', function() {
                 cropbox.zoomIn();
@@ -190,10 +180,20 @@
             zoomOutBtn.addEventListener('click', function() {
                 cropbox.zoomOut();
             });
-            var fromUrlBtn = document.querySelector('.btn-from-url');
-            fromUrlBtn.addEventListener('click', function() {
-                cropbox.loadFromSrc(document.querySelector('input[name="url"]').value);
+            cropbox.getMembrane().addEventListener('wheel', function(event) {
+                if (event.deltaY < 0) {
+                    cropbox.zoomIn();
+                } else {
+                    cropbox.zoomOut();
+                }
+                event.preventDefault ? event.preventDefault() : (event.returnValue = false);
             });
+            // image loading from a uri
+            var fromUriBtn = document.querySelector('.btn-from-uri');
+            fromUriBtn.addEventListener('click', function() {
+                cropbox.loadFromSrc(document.querySelector('input[name="uri"]').value);
+            });
+            // image loading from a file
             var fileInput = document.querySelector('input[type="file"]');
             fileInput.addEventListener('change', function() {
                 var fileReader = new FileReader();
@@ -202,9 +202,33 @@
                     cropbox.loadFromSrc(event.target.result);
                 });
             });
+            // reset
             var resetBtn = document.querySelector('.btn-reset');
             resetBtn.addEventListener('click', function() {
                 cropbox.reset();
+            });
+            // crop
+            var cropBtn = document.querySelector('.btn-crop');
+            cropBtn.addEventListener('click', function() {
+                cropbox.crop();
+            });
+            // the cropped event
+            cropbox.getCb().addEventListener('cb.cropped', function(event) {
+                // add image to the container
+                var img = new Image;
+                img.src = event.detail.data.image;
+                img.setAttribute('style', 'margin-right: 5px; margin-bottom: 5px');
+                img.className = 'img-thumbnail';
+                document.querySelector('#cropped-container .panel-body').appendChild(img);
+                // update inforamtion about crop
+                document.querySelector('#data').value = JSON.stringify(cropbox.getData());
+            });
+            // the reset event
+            cropbox.getCb().addEventListener('cb.reset', function() {
+                // clear the container
+                document.querySelector('#cropped-container .panel-body').innerHTML = '';
+                // clear information about crop
+                document.querySelector('#data').value = '';
             });
         </script>
         <footer>
