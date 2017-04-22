@@ -51,6 +51,27 @@
             return this._inputInfo.value.length ? JSON.parse(this._inputInfo.value) : [];
         },
         /**
+         * @param {String} src
+         */
+        loadImage: function(src) {
+            var self = this;
+            this._sourceImage.addEventListener(EVENT_LOAD, function() {
+                self._image.addEventListener(EVENT_LOAD, function() {
+                    self._start();
+                });
+                self._image.src = this.src;
+            });
+            this._sourceImage.src = src;
+        },
+        reset: function() {
+            this._resultFromBackup();
+            this._setInfo([]);
+            this._resetVariant();
+            this._hideWorkarea();
+            this._disableControls();
+            this._hideMessage();
+        },
+        /**
          * @param {Object} o
          */
         _configurate: function(o) {
@@ -204,8 +225,6 @@
             this._attachImageMouseWheelEvent();
             // window resize
             this._attachResizeWorkareaEvent();
-            // load image
-            this._attachLoadImageEvent();
             // select image from file
             this._attachSelectFromFileEvent();
             // crop image
@@ -213,14 +232,34 @@
             // reset button
             this._attachResetEvent();
         },
-        _attachLoadImageEvent: function() {
-            var self = this;
-            this._sourceImage.addEventListener(EVENT_LOAD, function() {
-                self._image.addEventListener(EVENT_LOAD, function() {
-                    self._start();
-                });
-                self._image.src = this.src;
-            });
+        _initFrame: function() {
+            var variant = this._getCurrentVariant(),
+                left = this._workarea.clientWidth / 2 - variant.width / 2,
+                top = this._workarea.clientHeight / 2 - variant.height / 2;
+            this._frame.style.width = variant.width + 'px';
+            this._frame.style.height = variant.height + 'px';
+            this._frame.style.backgroundImage = 'url("' + this._sourceImage.src + '")';
+            this._refrashPosFrame(left, top);
+        },
+        _initImage: function() {
+            var left = this._image.clientWidth / 2 - this._workarea.clientWidth / 2,
+                top = this._image.clientHeight / 2 - this._workarea.clientHeight / 2;
+            this._refrashPosImage(-left, -top);
+        },
+        _initRatio: function() {
+            var variant = this._getCurrentVariant();
+            if (variant.width > this._sourceImage.width || variant.height > this._sourceImage.height) {
+                var wRatio = variant.width / this._sourceImage.width,
+                    hRatio = variant.height / this._sourceImage.height;
+                if (wRatio > hRatio) {
+                    this._ratio = wRatio;
+                } else {
+                    this._ratio = hRatio;
+                }
+            } else {
+                this._ratio = 1;
+            }
+            this._zoom(this._sourceImage.width * this._ratio, this._sourceImage.height * this._ratio);
         },
         _attachSelectFromFileEvent: function() {
             var self = this;
@@ -228,7 +267,7 @@
                 var fileReader = new FileReader();
                 fileReader.readAsDataURL(this.files[0]);
                 fileReader.addEventListener(EVENT_LOAD, function(event) {
-                    self._sourceImage.src = event.target.result;
+                    self.loadImage(event.target.result);
                 });
             });
         },
@@ -280,90 +319,6 @@
                     self._nextMessage();
                 }
             });
-        },
-        _initFrame: function() {
-            var variant = this._getCurrentVariant(),
-                left = this._workarea.clientWidth / 2 - variant.width / 2,
-                top = this._workarea.clientHeight / 2 - variant.height / 2;
-            this._frame.style.width = variant.width + 'px';
-            this._frame.style.height = variant.height + 'px';
-            this._frame.style.backgroundImage = 'url("' + this._sourceImage.src + '")';
-            this._refrashPosFrame(left, top);
-        },
-        /**
-         * @param {number} left
-         * @param {number} top
-         */
-        _refrashPosFrame: function(left, top) {
-            var imgLeft = parseFloat(getComputedStyle(this._image)['left']),
-                imgTop = parseFloat(getComputedStyle(this._image)['top']),
-                x = imgLeft - left,
-                y = imgTop - top;
-            if (x > 0) {
-                x = 0;
-                left = imgLeft;
-            } else if (this._image.clientWidth + imgLeft < left + this._frame.clientWidth) {
-                x = this._frame.clientWith - this._image.clientWidth;
-                left = imgLeft + this._image.clientWidth - this._frame.clientWidth;
-            }
-            if (y > 0) {
-                y = 0;
-                top = imgTop;
-            } else if (this._image.clientHeight + imgTop < top + this._frame.clientHeight) {
-                y = this._frame.clientHeight - this._image.clientHeight;
-                top = imgTop + this._image.clientHeight - this._frame.clientHeight;
-            }
-            this._frame.style.left = left + 'px';
-            this._frame.style.top = top + 'px';
-            this._frame.style.backgroundPosition = x + 'px ' + y + 'px';
-        },
-        /**
-         * @param {number} width
-         * @param {number} height
-         */
-        _refrashSizeFrame: function(width, height) {
-            var imgLeft = this._image.offsetLeft,
-                imgTop = this._image.offsetTop,
-                frameLeft = this._frame.offsetLeft,
-                frameTop = this._frame.offsetTop,
-                frameWidth = this._frame.clientWidth,
-                frameHeight = this._frame.clientHeight,
-                variant = this._getCurrentVariant(),
-                maxWidth = variant.maxWidth,
-                maxHeight = variant.maxHeight,
-                minWidth = variant.minWidth,
-                minHeight = variant.minHeight;
-            // set max width and min width
-            if (width > frameWidth && typeof maxWidth == 'undefined') {
-                maxWidth = frameWidth;
-            } else if (width < frameWidth && typeof minWidth == 'undefined') {
-                minWidth = frameWidth;
-            }
-            if (height > frameHeight && typeof maxHeight == 'undefined') {
-                maxHeight = frameHeight;
-            } else if (height < frameHeight && typeof minHeight == 'undefined') {
-                minHeight = frameHeight;
-            }
-            // check max and min width
-            if (width > maxWidth) {
-                width = maxWidth;
-            } else if (width < minWidth) {
-                width = minWidth;
-            }
-            if (this._image.clientWidth + imgLeft < frameLeft + width) {
-                width = this._image.clientWidth + imgLeft - frameLeft;
-            }
-            // check max and min height
-            if (height > maxHeight) {
-                height = maxHeight;
-            } else if (height < minHeight) {
-                height = minHeight;
-            }
-            if (this._image.clientHeight + imgTop < frameTop + height) {
-                height = this._image.clientHeight + imgTop - frameTop;
-            }
-            this._frame.style.width = width + 'px';
-            this._frame.style.height = height + 'px';
         },
         _attachFrameMouseDownEvent: function() {
             var self = this;
@@ -463,19 +418,6 @@
                 self._imageState.dragable = false;
             });
         },
-        /**
-         * @param {number} left
-         * @param {number} top
-         */
-        _refrashPosImage: function(left, top) {
-            this._image.style.left = left + 'px';
-            this._image.style.top = top + 'px';
-        },
-        _initImage: function() {
-            var left = this._image.clientWidth / 2 - this._workarea.clientWidth / 2,
-                top = this._image.clientHeight / 2 - this._workarea.clientHeight / 2;
-            this._refrashPosImage(-left, -top);
-        },
         _attachResizeWorkareaEvent: function() {
             var self = this;
             window.addEventListener(EVENT_RESIZE, function() {
@@ -495,6 +437,95 @@
                 event.preventDefault ? event.preventDefault() : (event.returnValue = false);
             });
         },
+        _attachResetEvent: function() {
+            var self = this;
+            this._btnReset.addEventListener(EVENT_CLICK, function() {
+                self.reset();
+            });
+        },
+        /**
+         * @param {number} left
+         * @param {number} top
+         */
+        _refrashPosFrame: function(left, top) {
+            var imgLeft = this._image.offsetLeft,
+                imgTop = this._image.offsetTop,
+                x = imgLeft - left,
+                y = imgTop - top;
+            if (x > 0) {
+                x = 0;
+                left = imgLeft;
+            } else if (this._image.clientWidth + imgLeft < left + this._frame.clientWidth) {
+                x = this._frame.clientWidth - this._image.clientWidth;
+                left = imgLeft + this._image.clientWidth - this._frame.clientWidth;
+            }
+            if (y > 0) {
+                y = 0;
+                top = imgTop;
+            } else if (this._image.clientHeight + imgTop < top + this._frame.clientHeight) {
+                y = this._frame.clientHeight - this._image.clientHeight;
+                top = imgTop + this._image.clientHeight - this._frame.clientHeight;
+            }
+            this._frame.style.left = left + 'px';
+            this._frame.style.top = top + 'px';
+            this._frame.style.backgroundPosition = x + 'px ' + y + 'px';
+        },
+        /**
+         * @param {number} width
+         * @param {number} height
+         */
+        _refrashSizeFrame: function(width, height) {
+            var imgLeft = this._image.offsetLeft,
+                imgTop = this._image.offsetTop,
+                frameLeft = this._frame.offsetLeft,
+                frameTop = this._frame.offsetTop,
+                frameWidth = this._frame.clientWidth,
+                frameHeight = this._frame.clientHeight,
+                variant = this._getCurrentVariant(),
+                maxWidth = variant.maxWidth,
+                maxHeight = variant.maxHeight,
+                minWidth = variant.minWidth,
+                minHeight = variant.minHeight;
+            // set max width and min width
+            if (width > frameWidth && typeof maxWidth == 'undefined') {
+                maxWidth = frameWidth;
+            } else if (width < frameWidth && typeof minWidth == 'undefined') {
+                minWidth = frameWidth;
+            }
+            if (height > frameHeight && typeof maxHeight == 'undefined') {
+                maxHeight = frameHeight;
+            } else if (height < frameHeight && typeof minHeight == 'undefined') {
+                minHeight = frameHeight;
+            }
+            // check max and min width
+            if (width > maxWidth) {
+                width = maxWidth;
+            } else if (width < minWidth) {
+                width = minWidth;
+            }
+            if (this._image.clientWidth + imgLeft < frameLeft + width) {
+                width = this._image.clientWidth + imgLeft - frameLeft;
+            }
+            // check max and min height
+            if (height > maxHeight) {
+                height = maxHeight;
+            } else if (height < minHeight) {
+                height = minHeight;
+            }
+            if (this._image.clientHeight + imgTop < frameTop + height) {
+                height = this._image.clientHeight + imgTop - frameTop;
+            }
+            this._frame.style.width = width + 'px';
+            this._frame.style.height = height + 'px';
+        },
+        /**
+         * @param {number} left
+         * @param {number} top
+         */
+        _refrashPosImage: function(left, top) {
+            this._image.style.left = left + 'px';
+            this._image.style.top = top + 'px';
+        },
         /**
          * @param {number} width
          * @param {number} height
@@ -503,21 +534,6 @@
             this._image.style.width = width + 'px';
             this._image.style.height = height + 'px';
             this._frame.style.backgroundSize = width + 'px ' + height + 'px';
-        },
-        _initRatio: function() {
-            var variant = this._getCurrentVariant();
-            if (variant.width > this._sourceImage.width || variant.height > this._sourceImage.height) {
-                var wRatio = variant.width / this._sourceImage.width,
-                    hRatio = variant.height / this._sourceImage.height;
-                if (wRatio > hRatio) {
-                    this._ratio = wRatio;
-                } else {
-                    this._ratio = hRatio;
-                }
-            } else {
-                this._ratio = 1;
-            }
-            this._zoom(this._sourceImage.width * this._ratio, this._sourceImage.height * this._ratio);
         },
         _showWorkarea: function() {
             this._workarea.style.display = 'block';
@@ -559,17 +575,6 @@
             var data = this.getInfo();
             data.push(value);
             this._inputInfo.value = JSON.stringify(data);
-        },
-        _attachResetEvent: function() {
-            var self = this;
-            this._btnReset.addEventListener(EVENT_CLICK, function() {
-                self._resultFromBackup();
-                self._setInfo([]);
-                self._resetVariant();
-                self._hideWorkarea();
-                self._disableControls();
-                self._hideMessage();
-            });
         },
         _start: function() {
             this._emptyResultContainer();
