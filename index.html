@@ -68,7 +68,7 @@
             </div>
         </nav>
         <div class="container">
-            <div class="alert alert-warning">
+            <div class="alert alert-danger">
                 <p>At example uses Bootstrap. You cannot use it at your projects.</p>
                 <p><strong>Module can be uses without Bootstrap.</strong></p>
             </div>
@@ -79,10 +79,10 @@
                     <a href="https://github.com/bupy7/js-cropbox" class="btn btn-primary btn-lg">
                         Homepage
                     </a>
-                    <a href="https://github.com/bupy7/jquery-cropbox" class="btn btn-danger btn-lg">
+                    <a href="https://github.com/bupy7/jquery-cropbox" class="btn btn-default btn-lg">
                         Integration with jQuery
                     </a>
-                    <a href="https://github.com/bupy7/yii2-widget-cropbox" class="btn btn-info btn-lg">
+                    <a href="https://github.com/bupy7/yii2-widget-cropbox" class="btn btn-default btn-lg">
                         Integration with Yii2
                     </a>
                 </p>
@@ -98,17 +98,37 @@
                         <div class="resize-cropbox"></div>
                     </div>
                 </div>
-                <div class="btn-group">
-                    <span class="btn btn-primary btn-file">
-                        <i class="glyphicon glyphicon-folder-open"></i>
-                        Browse <input type="file" accept="image/*">
-                    </span>
-                    <button type="button" class="btn btn-success btn-crop">
-                        <i class="glyphicon glyphicon-scissors"></i> Crop
-                    </button>
-                    <button type="button" class="btn btn-warning btn-reset">
-                        <i class="glyphicon glyphicon-repeat"></i> Reset
-                    </button>
+                <div class="form-inline">
+                    <div class="form-group">
+                        <span class="btn btn-primary btn-file">
+                            <i class="glyphicon glyphicon-folder-open"></i>
+                            Browse <input type="file" accept="image/*">
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="glyphicon glyphicon-link"></i>
+                            </div>
+                            <input type="text" name="link" class="form-control" placeholder="Link...">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-success btn-crop">
+                                <i class="glyphicon glyphicon-scissors"></i> Crop
+                            </button>
+                            <button type="button" class="btn btn-warning btn-reset">
+                                <i class="glyphicon glyphicon-repeat"></i> Reset
+                            </button>
+                            <button type="button" class="btn btn-default btn-zoom-out">
+                                <i class="glyphicon glyphicon-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-default btn-zoom-in">
+                                <i class="glyphicon glyphicon-plus"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div class="cropped panel panel-default">
                     <div class="panel-heading"><h3 class="panel-title">Result of cropping</h3></div>
@@ -121,99 +141,11 @@
             </div>
             <h2>Source code of example</h2>
             <h4>CSS</h4>
-<pre class="brush: css;">
-div.cropbox .btn-file {
-    position: relative;
-    overflow: hidden;
-}
-div.cropbox .btn-file input[type=file] {
-    position: absolute;
-    top: 0;
-    right: 0;
-    min-width: 100%;
-    min-height: 100%;
-    font-size: 100px;
-    text-align: right;
-    filter: alpha(opacity=0);
-    opacity: 0;
-    outline: none;
-    background: white;
-    cursor: inherit;
-    display: block;
-}
-div.cropbox .cropped {
-    margin-top: 10px;
-}
-</pre>
+<pre class="brush: css;"></pre>
             <h4>HTML</h4>
-<pre class="brush: html;">
-<div id="message" class="alert alert-info"></div> 
-<div id="plugin" class="cropbox">
-    <div class="workarea-cropbox">
-        <div class="bg-cropbox">
-            <img class="image-cropbox">
-            <div class="membrane-cropbox"></div>
-        </div>
-        <div class="frame-cropbox">
-            <div class="resize-cropbox"></div>
-        </div>
-    </div>
-    <div class="btn-group">
-        <span class="btn btn-primary btn-file">
-            <i class="glyphicon glyphicon-folder-open"></i>
-            Browse <input type="file" accept="image/*">
-        </span>
-        <button type="button" class="btn btn-success btn-crop">
-            <i class="glyphicon glyphicon-scissors"></i> Crop
-        </button>
-        <button type="button" class="btn btn-warning btn-reset">
-            <i class="glyphicon glyphicon-repeat"></i> Reset
-        </button>
-    </div>
-    <div class="cropped panel panel-default">
-        <div class="panel-heading"><h3 class="panel-title">Result of cropping</h3></div>
-        <div class="panel-body">...</div>
-    </div>
-    <div class="form-group">
-        <label>Info of cropping</label>
-        <textarea class="data form-control" rows="5"></textarea>
-    </div>
-</div>
-</pre>
+<pre class="brush: html;"></pre>
             <h4>JS</h4>
-<pre class="brush: js;">
-var cropbox = new Cropbox({
-    cb: '#plugin',
-    inputInfo: '#plugin textarea.data',
-    inputFile: '#plugin input[type="file"]',
-    btnCrop: '#plugin .btn-crop',
-    btnReset: '#plugin .btn-reset',
-    resultContainer: '#plugin .cropped .panel-body',
-    messageBlock: '#message',
-    imageOptions: {
-        class: 'img-thumbnail',
-        style: 'margin-right: 5px; margin-bottom: 5px'
-    },
-    variants: [
-        {
-            width: 200,
-            height: 200,
-            minWidth: 180,
-            minHeight: 200,
-            maxWidth: 350,
-            maxHeight: 350
-        },
-        {
-            width: 150,
-            height: 200
-        }
-    ],
-    messages: [
-        'Crop a middle image.',
-        'Crop a small image.'
-    ]
-});
-</pre>
+<pre class="brush: js;"></pre>
         </div>
         <script src="bower_components/jquery/dist/jquery.min.js"></script>
         <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -249,6 +181,18 @@ var cropbox = new Cropbox({
                     'Crop a middle image.',
                     'Crop a small image.'
                 ]
+            });
+            var zoomInBtn = document.querySelector('#plugin .btn-zoom-in');
+            zoomInBtn.addEventListener('click', function() {
+                cropbox.zoomIn();
+            });
+            var zoomOutBtn = document.querySelector('#plugin .btn-zoom-out');
+            zoomOutBtn.addEventListener('click', function() {
+                cropbox.zoomOut();
+            });
+            var linkInput = document.querySelector('#plugin input[name="link"]');
+            linkInput.addEventListener('change', function() {
+                cropbox.loadImage(this.value);
             });
         </script>
         <footer>
