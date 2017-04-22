@@ -247,17 +247,13 @@
             this._refrashPosImage(-left, -top);
         },
         _initRatio: function() {
-            var variant = this._getCurrentVariant();
-            if (variant.width > this._sourceImage.width || variant.height > this._sourceImage.height) {
-                var wRatio = variant.width / this._sourceImage.width,
-                    hRatio = variant.height / this._sourceImage.height;
-                if (wRatio > hRatio) {
-                    this._ratio = wRatio;
-                } else {
-                    this._ratio = hRatio;
-                }
+            var variant = this._getCurrentVariant(),
+                wRatio = variant.width / this._sourceImage.width,
+                hRatio = variant.height / this._sourceImage.height;
+            if (wRatio > hRatio) {
+                this._ratio = wRatio;
             } else {
-                this._ratio = 1;
+                this._ratio = hRatio;
             }
             this._zoom(this._sourceImage.width * this._ratio, this._sourceImage.height * this._ratio);
         },
