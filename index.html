@@ -364,7 +364,7 @@ footer {
             // the cropped event
             cropbox.getCb().addEventListener('cb.cropped', function(event){
                 // add image to the container
-                var img = new Image;
+                var img = document.createElement('img');
                 img.src = event.detail.data.image;
                 img.setAttribute('style', 'margin-right: 5px; margin-bottom: 5px');
                 img.className = 'img-thumbnail';
