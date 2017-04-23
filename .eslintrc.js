@@ -1,9 +1,5 @@
 module.exports = {
     extends: 'standard',
-    plugins: [
-        'standard',
-        'promise'
-    ],
     rules: {
         indent: ['error', 4],
         'one-var': 0,
