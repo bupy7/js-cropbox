@@ -1,5 +1,5 @@
-var Cropbox = (function(window, document){
-    "use strict";
+window.Cropbox = (function(window, document) {
+    'use strict';
 
     // const
     var VERSION = '0.9.0',
@@ -15,14 +15,14 @@ var Cropbox = (function(window, document){
         EVENT_CB_LOADED = 'cb.loaded';
 
     var publicMethods = {
-        zoomIn: function(){
+        zoomIn: function() {
             this._ratio *= 1.01;
             var width = this._sourceImage.width * this._ratio,
                 height = this._sourceImage.height * this._ratio;
             this._zoom(width, height);
             this._refrashPosFrame(this._frame.offsetLeft, this._frame.offsetTop);
         },
-        zoomOut: function(){
+        zoomOut: function() {
             var oldRatio = this._ratio;
             this._ratio *= 0.99;
             var width = this._sourceImage.width * this._ratio,
@@ -37,17 +37,17 @@ var Cropbox = (function(window, document){
         /**
          * @param {String} src
          */
-        load: function(src){
+        load: function(src) {
             this._sourceImage.src = src;
         },
-        reset: function(){
+        reset: function() {
             this._clearData();
             this._resetVariant();
             this._hideWorkarea();
             this._disableControls();
             this._trigger(EVENT_CB_RESET);
         },
-        crop: function(){
+        crop: function() {
             var x = this._frame.offsetLeft - this._image.offsetLeft,
                 y = this._frame.offsetTop - this._image.offsetTop,
                 frameWidth = this._frame.clientWidth,
@@ -85,43 +85,43 @@ var Cropbox = (function(window, document){
         /**
          * @returns {Array}
          */
-        getData: function(){
+        getData: function() {
             return this._data;
         },
         /**
          * @returns {HtmlElement}
          */
-        getCb: function(){
+        getCb: function() {
             return this._cb;
         },
         /**
          * @returns {HtmlElement}
          */
-        getMembrane: function(){
+        getMembrane: function() {
             return this._membrane;
         },
         /**
          * @returns {HtmlElement}
          */
-        getImage: function(){
+        getImage: function() {
             return this._image;
         },
         /**
          * @returns {HtmlElement}
          */
-        getFrame: function(){
+        getFrame: function() {
             return this._frame;
         },
         /**
          * @returns {HtmlElement}
          */
-        getWorkarea: function(){
+        getWorkarea: function() {
             return this._workarea;
         },
         /**
          * @returns {HtmlElement}
          */
-        getResize: function(){
+        getResize: function() {
             return this._resize;
         },
         /**
@@ -135,7 +135,7 @@ var Cropbox = (function(window, document){
         /**
          * @param {Object} o
          */
-        _configurate: function(o){
+        _configurate: function(o) {
             /**
              * @type {Object}
              */
@@ -194,7 +194,7 @@ var Cropbox = (function(window, document){
             /**
              * @type {Image}
              */
-            this._sourceImage = new Image();
+            this._sourceImage = document.createElement('img');
             /**
              * @type {float}
              */
@@ -213,7 +213,7 @@ var Cropbox = (function(window, document){
             this._disabledControls = false;
 
             // init
-            this._cb = typeof o.cb == 'string' ? document.querySelector(o.cb) : o.cb;
+            this._cb = typeof o.cb === 'string' ? document.querySelector(o.cb) : o.cb;
             this._variants = o.variants || this.dO.variants;
             this._image = this._cb.querySelector('.image-cropbox');
             this._frame = this._cb.querySelector('.frame-cropbox');
@@ -221,7 +221,7 @@ var Cropbox = (function(window, document){
             this._membrane = this._cb.querySelector('.membrane-cropbox');
             this._resize = this._cb.querySelector('.resize-cropbox');
         },
-        _initEvents: function(){
+        _initEvents: function() {
             // move frame
             this._attachFrameMouseDownEvent();
             this._attachFrameMouseMoveEvent();
@@ -241,7 +241,7 @@ var Cropbox = (function(window, document){
             // image cropped
             this._attachCroppedEvent();
         },
-        _initFrame: function(){
+        _initFrame: function() {
             var variant = this._getCurrentVariant(),
                 left = this._workarea.clientWidth / 2 - variant.width / 2,
                 top = this._workarea.clientHeight / 2 - variant.height / 2;
@@ -250,12 +250,12 @@ var Cropbox = (function(window, document){
             this._frame.style.backgroundImage = 'url("' + this._sourceImage.src + '")';
             this._refrashPosFrame(left, top);
         },
-        _initImage: function(){
+        _initImage: function() {
             var left = this._image.clientWidth / 2 - this._workarea.clientWidth / 2,
                 top = this._image.clientHeight / 2 - this._workarea.clientHeight / 2;
             this._refrashPosImage(-left, -top);
         },
-        _initRatio: function(){
+        _initRatio: function() {
             var variant = this._getCurrentVariant(),
                 wRatio = variant.width / this._sourceImage.width,
                 hRatio = variant.height / this._sourceImage.height;
@@ -270,7 +270,7 @@ var Cropbox = (function(window, document){
          * @param {number} left
          * @param {number} top
          */
-        _refrashPosFrame: function(left, top){
+        _refrashPosFrame: function(left, top) {
             var imgLeft = this._image.offsetLeft,
                 imgTop = this._image.offsetTop,
                 x = imgLeft - left,
@@ -297,7 +297,7 @@ var Cropbox = (function(window, document){
          * @param {number} width
          * @param {number} height
          */
-        _refrashSizeFrame: function(width, height){
+        _refrashSizeFrame: function(width, height) {
             var imgLeft = this._image.offsetLeft,
                 imgTop = this._image.offsetTop,
                 frameLeft = this._frame.offsetLeft,
@@ -310,14 +310,14 @@ var Cropbox = (function(window, document){
                 minWidth = variant.minWidth,
                 minHeight = variant.minHeight;
             // set max width and min width
-            if (width > frameWidth && typeof maxWidth == 'undefined') {
+            if (width > frameWidth && typeof maxWidth === 'undefined') {
                 maxWidth = frameWidth;
-            } else if (width < frameWidth && typeof minWidth == 'undefined') {
+            } else if (width < frameWidth && typeof minWidth === 'undefined') {
                 minWidth = frameWidth;
             }
-            if (height > frameHeight && typeof maxHeight == 'undefined') {
+            if (height > frameHeight && typeof maxHeight === 'undefined') {
                 maxHeight = frameHeight;
-            } else if (height < frameHeight && typeof minHeight == 'undefined') {
+            } else if (height < frameHeight && typeof minHeight === 'undefined') {
                 minHeight = frameHeight;
             }
             // check max and min width
@@ -345,7 +345,7 @@ var Cropbox = (function(window, document){
          * @param {number} left
          * @param {number} top
          */
-        _refrashPosImage: function(left, top){
+        _refrashPosImage: function(left, top) {
             this._image.style.left = left + 'px';
             this._image.style.top = top + 'px';
         },
@@ -353,24 +353,24 @@ var Cropbox = (function(window, document){
          * @param {number} width
          * @param {number} height
          */
-        _zoom: function(width, height){
+        _zoom: function(width, height) {
             this._image.style.width = width + 'px';
             this._image.style.height = height + 'px';
             this._frame.style.backgroundSize = width + 'px ' + height + 'px';
         },
-        _showWorkarea: function(){
+        _showWorkarea: function() {
             this._workarea.style.display = 'block';
         },
-        _hideWorkarea: function(){
+        _hideWorkarea: function() {
             this._workarea.style.display = 'none';
         },
-        _resetVariant: function(){
+        _resetVariant: function() {
             this._indexVariant = 0;
         },
-        _getCurrentVariant: function(){
+        _getCurrentVariant: function() {
             return this._variants[this._indexVariant];
         },
-        _nextVariant: function(){
+        _nextVariant: function() {
             if (this._variants.length <= this._indexVariant + 1) {
                 this._indexVariant = 0;
                 this._stop();
@@ -380,16 +380,16 @@ var Cropbox = (function(window, document){
             this._initImage();
             this._initFrame();
         },
-        _clearData: function(){
+        _clearData: function() {
             this._data = [];
         },
         /**
          * @param {Object} data
          */
-        _addData: function(data){
+        _addData: function(data) {
             this._data.push(data);
         },
-        _start: function(){
+        _start: function() {
             this._enableControls();
             this._clearData();
             this._resetVariant();
@@ -398,19 +398,19 @@ var Cropbox = (function(window, document){
             this._initImage();
             this._initFrame();
         },
-        _stop: function(){
+        _stop: function() {
             this._disableControls();
             this._hideWorkarea();
         },
-        _disableControls: function(){
+        _disableControls: function() {
             this._disabledControls = true;
             this._trigger(EVENT_CB_DISABLED_CTRLS);
         },
-        _enableControls: function(){
+        _enableControls: function() {
             this._disabledControls = false;
             this._trigger(EVENT_CB_ENABLED_CTRLS);
         },
-        _trigger: function(name, data){
+        _trigger: function(name, data) {
             var event = null;
             if (window.CustomEvent) {
                 event = new CustomEvent(name, {detail: data});
@@ -422,27 +422,27 @@ var Cropbox = (function(window, document){
         }
     };
     var events = {
-        _attachLoadEvent: function(){
+        _attachLoadEvent: function() {
             var self = this;
-            this._sourceImage.addEventListener(EVENT_LOAD, function(){
-                self._image.addEventListener(EVENT_LOAD, function(){
+            this._sourceImage.addEventListener(EVENT_LOAD, function() {
+                self._image.addEventListener(EVENT_LOAD, function() {
                     self._start();
                 });
                 self._image.src = this.src;
                 self._trigger(EVENT_CB_LOADED);
             });
         },
-        _attachFrameMouseDownEvent: function(){
+        _attachFrameMouseDownEvent: function() {
             var self = this;
-            this._frame.addEventListener(EVENT_MOUSE_DOWN, function(event){
+            this._frame.addEventListener(EVENT_MOUSE_DOWN, function(event) {
                 self._frameState.dragable = true;
                 self._frameState.mouseX = event.clientX;
                 self._frameState.mouseY = event.clientY;
             });
         },
-        _attachFrameMouseMoveEvent: function(){
+        _attachFrameMouseMoveEvent: function() {
             var self = this;
-            this._frame.addEventListener(EVENT_MOUSE_MOVE, function(event){
+            this._frame.addEventListener(EVENT_MOUSE_MOVE, function(event) {
                 if (self._frameState.dragable) {
                     var leftOld = self._frame.offsetLeft,
                         topOld = self._frame.offsetTop,
@@ -454,26 +454,26 @@ var Cropbox = (function(window, document){
                 }
             });
         },
-        _attachFrameMouseUpEvent: function(){
+        _attachFrameMouseUpEvent: function() {
             var self = this;
-            document.addEventListener(EVENT_MOUSE_UP, function(event){
+            document.addEventListener(EVENT_MOUSE_UP, function(event) {
                 event.preventDefault();
                 event.stopPropagation();
                 self._frameState.dragable = false;
             });
         },
-        _attachResizeMouseDownEvent: function(){
+        _attachResizeMouseDownEvent: function() {
             var self = this;
-            this._resize.addEventListener(EVENT_MOUSE_DOWN, function(event){
+            this._resize.addEventListener(EVENT_MOUSE_DOWN, function(event) {
                 event.stopImmediatePropagation();
                 self._resizeState.dragable = true;
                 self._resizeState.mouseX = event.clientX;
                 self._resizeState.mouseY = event.clientY;
             });
         },
-        _attachResizeMouseMoveEvent: function(){
+        _attachResizeMouseMoveEvent: function() {
             var self = this;
-            document.addEventListener(EVENT_MOUSE_MOVE, function(event){
+            document.addEventListener(EVENT_MOUSE_MOVE, function(event) {
                 if (self._resizeState.dragable) {
                     var widthOld = self._frame.clientWidth,
                         heightOld = self._frame.clientHeight,
@@ -485,25 +485,25 @@ var Cropbox = (function(window, document){
                 }
             });
         },
-        _attachResizeMouseUpEvent: function(){
+        _attachResizeMouseUpEvent: function() {
             var self = this;
-            document.addEventListener(EVENT_MOUSE_UP, function(event){
+            document.addEventListener(EVENT_MOUSE_UP, function(event) {
                 event.preventDefault();
                 event.stopPropagation();
                 self._resizeState.dragable = false;
             });
         },
-        _attachImageMouseDownEvent: function(){
+        _attachImageMouseDownEvent: function() {
             var self = this;
-            this._membrane.addEventListener(EVENT_MOUSE_DOWN, function(event){
+            this._membrane.addEventListener(EVENT_MOUSE_DOWN, function(event) {
                 self._imageState.dragable = true;
                 self._imageState.mouseX = event.clientX;
                 self._imageState.mouseY = event.clientY;
             });
         },
-        _attachImageMouseMoveEvent: function(){
+        _attachImageMouseMoveEvent: function() {
             var self = this;
-            this._membrane.addEventListener(EVENT_MOUSE_MOVE, function(event){
+            this._membrane.addEventListener(EVENT_MOUSE_MOVE, function(event) {
                 if (self._imageState.dragable) {
                     var leftOld = getComputedStyle(self._image).left,
                         topOld = getComputedStyle(self._image).top,
@@ -522,25 +522,25 @@ var Cropbox = (function(window, document){
                 }
             });
         },
-        _attachImageMouseUpEvent: function(){
+        _attachImageMouseUpEvent: function() {
             var self = this;
-            this._membrane.addEventListener(EVENT_MOUSE_UP, function(event){
+            this._membrane.addEventListener(EVENT_MOUSE_UP, function(event) {
                 event.preventDefault();
                 event.stopPropagation();
                 self._imageState.dragable = false;
             });
         },
-        _attachResizeWorkareaEvent: function(){
+        _attachResizeWorkareaEvent: function() {
             var self = this;
-            window.addEventListener(EVENT_RESIZE, function(){
+            window.addEventListener(EVENT_RESIZE, function() {
                 self._initRatio();
                 self._initImage();
                 self._initFrame();
             });
         },
-        _attachCroppedEvent: function(){
+        _attachCroppedEvent: function() {
             var self = this;
-            this._cb.addEventListener(EVENT_CB_CROPPED, function(event){
+            this._cb.addEventListener(EVENT_CB_CROPPED, function(event) {
                 self._addData(event.detail.data);
                 self._nextVariant();
             });
@@ -552,8 +552,8 @@ var Cropbox = (function(window, document){
      * @param {Object} [o]
      * @returns {Cropbox}
      */
-    function Cropbox(cb, o){
-        if (typeof cb == 'object') {
+    function Cropbox(cb, o) {
+        if (typeof cb === 'object') {
             o = cb;
         } else {
             o = Object.assign(o || {}, {cb: cb});

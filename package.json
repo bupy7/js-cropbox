@@ -23,14 +23,15 @@
   },
   "homepage": "https://github.com/bupy7/js-cropbox",
   "devDependencies": {
-    "cssnano": "3.10.0",
-    "cssnano-cli": "1.0.5",
-    "grunt": "1.0.1",
-    "uglify-js": "2.8.22"
-  },
-  "scripts": {
-    "compress:css": "./node_modules/.bin/cssnano src/css/cropbox.css build/cropbox.min.css",
-    "compress:js": "./node_modules/.bin/uglifyjs src/js/cropbox.js -o build/cropbox.min.js -c -m --comments /^!/",
-    "compress": "npm run compress:css && npm run compress:js"
+    "eslint": "^3.19.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-node": "^4.2.2",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "grunt": "^1.0.1",
+    "grunt-contrib-uglify": "^2.3.0",
+    "grunt-cssnano": "^2.1.0",
+    "grunt-eslint": "^19.0.0"
   }
 }
