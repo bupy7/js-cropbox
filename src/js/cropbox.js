@@ -1,4 +1,4 @@
-;var Cropbox = (function(window, document){
+var Cropbox = (function(window, document){
     "use strict";
 
     // const
@@ -123,6 +123,12 @@
          */
         getResize: function(){
             return this._resize;
+        },
+        /**
+         * @returns {String}
+         */
+        getVersion: function() {
+            return VERSION;
         }
     };
     var protectedMethods = {
@@ -188,7 +194,7 @@
             /**
              * @type {Image}
              */
-            this._sourceImage = new Image;
+            this._sourceImage = new Image();
             /**
              * @type {float}
              */
@@ -405,10 +411,11 @@
             this._trigger(EVENT_CB_ENABLED_CTRLS);
         },
         _trigger: function(name, data){
+            var event = null;
             if (window.CustomEvent) {
-                var event = new CustomEvent(name, {detail: data});
+                event = new CustomEvent(name, {detail: data});
             } else {
-                var event = document.createEvent('CustomEvent');
+                event = document.createEvent('CustomEvent');
                 event.initCustomEvent(name, true, true, data);
             }
             this._cb.dispatchEvent(event);
@@ -498,8 +505,8 @@
             var self = this;
             this._membrane.addEventListener(EVENT_MOUSE_MOVE, function(event){
                 if (self._imageState.dragable) {
-                    var leftOld = getComputedStyle(self._image)['left'],
-                        topOld = getComputedStyle(self._image)['top'],
+                    var leftOld = getComputedStyle(self._image).left,
+                        topOld = getComputedStyle(self._image).top,
                         left = event.clientX - self._imageState.mouseX + parseFloat(leftOld),
                         top = event.clientY - self._imageState.mouseY + parseFloat(topOld);
                     self._imageState.mouseX = event.clientX;
@@ -509,8 +516,8 @@
                     self._frameState.mouseX = event.clientX;
                     self._frameState.mouseY = event.clientY;
                     self._refrashPosFrame(
-                        parseFloat(getComputedStyle(self._frame)['left']),
-                        parseFloat(getComputedStyle(self._frame)['top'])
+                        parseFloat(getComputedStyle(self._frame).left),
+                        parseFloat(getComputedStyle(self._frame).top)
                     );
                 }
             });
