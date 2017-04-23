@@ -11,22 +11,7 @@
         EVENT_CB_CROPPED = 'cb.cropped',
         EVENT_CB_RESET = 'cb.reset';
 
-    /**
-     * @param {HTMLElement|String|Object} cb
-     * @param {Object} [o]
-     * @returns {Cropbox}
-     */
-    function Cropbox(cb, o){
-        if (typeof cb == 'object') {
-            o = cb;
-        } else {
-            o = Object.assign(o || {}, {cb: cb});
-        }
-        this._configurate(o);
-        this._initEvents();
-    }
-
-    Cropbox.prototype = Object.assign(Cropbox.prototype, {
+    var publicMethods = {
         zoomIn: function(){
             this._ratio *= 1.01;
             var width = this._sourceImage.width * this._ratio,
@@ -49,7 +34,7 @@
         /**
          * @param {String} src
          */
-        loadFromSrc: function(src){
+        load: function(src){
             this._sourceImage.src = src;
         },
         reset: function(){
@@ -134,7 +119,9 @@
          */
         getResize: function(){
             return this._resize;
-        },
+        }
+    };
+    var protectedMethods = {
         /**
          * @param {Object} o
          */
@@ -264,131 +251,6 @@
                 this._ratio = hRatio;
             }
             this._zoom(this._sourceImage.width * this._ratio, this._sourceImage.height * this._ratio);
-        },
-        // TODO
-        _attachLoadEvent: function(){
-            var self = this;
-            this._sourceImage.addEventListener(EVENT_LOAD, function(){
-                console.log('load source image');
-                self._image.addEventListener(EVENT_LOAD, function(){
-                    console.log('load image');
-                    self._start();
-                });
-                self._image.src = this.src;
-            });
-        },
-        _attachFrameMouseDownEvent: function(){
-            var self = this;
-            this._frame.addEventListener(EVENT_MOUSE_DOWN, function(event){
-                self._frameState.dragable = true;
-                self._frameState.mouseX = event.clientX;
-                self._frameState.mouseY = event.clientY;
-            });
-        },
-        _attachFrameMouseMoveEvent: function(){
-            var self = this;
-            this._frame.addEventListener(EVENT_MOUSE_MOVE, function(event){
-                if (self._frameState.dragable) {
-                    var leftOld = self._frame.offsetLeft,
-                        topOld = self._frame.offsetTop,
-                        left = event.clientX - self._frameState.mouseX + leftOld,
-                        top = event.clientY - self._frameState.mouseY + topOld;
-                    self._frameState.mouseX = event.clientX;
-                    self._frameState.mouseY = event.clientY;
-                    self._refrashPosFrame(left, top);
-                }
-            });
-        },
-        _attachFrameMouseUpEvent: function(){
-            var self = this;
-            document.addEventListener(EVENT_MOUSE_UP, function(event){
-                event.preventDefault();
-                event.stopPropagation();
-                self._frameState.dragable = false;
-            });
-        },
-        _attachResizeMouseDownEvent: function(){
-            var self = this;
-            this._resize.addEventListener(EVENT_MOUSE_DOWN, function(event){
-                event.stopImmediatePropagation();
-                self._resizeState.dragable = true;
-                self._resizeState.mouseX = event.clientX;
-                self._resizeState.mouseY = event.clientY;
-            });
-        },
-        _attachResizeMouseMoveEvent: function(){
-            var self = this;
-            document.addEventListener(EVENT_MOUSE_MOVE, function(event){
-                if (self._resizeState.dragable) {
-                    var widthOld = self._frame.clientWidth,
-                        heightOld = self._frame.clientHeight,
-                        width = event.clientX - self._resizeState.mouseX + widthOld,
-                        height = event.clientY - self._resizeState.mouseY + heightOld;
-                    self._resizeState.mouseX = event.clientX;
-                    self._resizeState.mouseY = event.clientY;
-                    self._refrashSizeFrame(width, height);
-                }
-            });
-        },
-        _attachResizeMouseUpEvent: function(){
-            var self = this;
-            document.addEventListener(EVENT_MOUSE_UP, function(event){
-                event.preventDefault();
-                event.stopPropagation();
-                self._resizeState.dragable = false;
-            });
-        },
-        _attachImageMouseDownEvent: function(){
-            var self = this;
-            this._membrane.addEventListener(EVENT_MOUSE_DOWN, function(event){
-                self._imageState.dragable = true;
-                self._imageState.mouseX = event.clientX;
-                self._imageState.mouseY = event.clientY;
-            });
-        },
-        _attachImageMouseMoveEvent: function(){
-            var self = this;
-            this._membrane.addEventListener(EVENT_MOUSE_MOVE, function(event){
-                if (self._imageState.dragable) {
-                    var leftOld = getComputedStyle(self._image)['left'],
-                        topOld = getComputedStyle(self._image)['top'],
-                        left = event.clientX - self._imageState.mouseX + parseFloat(leftOld),
-                        top = event.clientY - self._imageState.mouseY + parseFloat(topOld);
-                    self._imageState.mouseX = event.clientX;
-                    self._imageState.mouseY = event.clientY;
-                    self._refrashPosImage(left, top);
-
-                    self._frameState.mouseX = event.clientX;
-                    self._frameState.mouseY = event.clientY;
-                    self._refrashPosFrame(
-                        parseFloat(getComputedStyle(self._frame)['left']),
-                        parseFloat(getComputedStyle(self._frame)['top'])
-                    );
-                }
-            });
-        },
-        _attachImageMouseUpEvent: function(){
-            var self = this;
-            this._membrane.addEventListener(EVENT_MOUSE_UP, function(event){
-                event.preventDefault();
-                event.stopPropagation();
-                self._imageState.dragable = false;
-            });
-        },
-        _attachResizeWorkareaEvent: function(){
-            var self = this;
-            window.addEventListener(EVENT_RESIZE, function(){
-                self._initRatio();
-                self._initImage();
-                self._initFrame();
-            });
-        },
-        _attachCroppedEvent: function(){
-            var self = this;
-            this._cb.addEventListener(EVENT_CB_CROPPED, function(event){
-                self._addData(event.detail.data);
-                self._nextVariant();
-            });
         },
         /**
          * @param {number} left
@@ -533,7 +395,148 @@
             }
             this._cb.dispatchEvent(event);
         }
-    });
+    };
+    var events = {
+        _attachLoadEvent: function(){
+            var self = this;
+            this._sourceImage.addEventListener(EVENT_LOAD, function(){
+                self._image.addEventListener(EVENT_LOAD, function(){
+                    self._start();
+                });
+                self._image.src = this.src;
+            });
+        },
+        _attachFrameMouseDownEvent: function(){
+            var self = this;
+            this._frame.addEventListener(EVENT_MOUSE_DOWN, function(event){
+                self._frameState.dragable = true;
+                self._frameState.mouseX = event.clientX;
+                self._frameState.mouseY = event.clientY;
+            });
+        },
+        _attachFrameMouseMoveEvent: function(){
+            var self = this;
+            this._frame.addEventListener(EVENT_MOUSE_MOVE, function(event){
+                if (self._frameState.dragable) {
+                    var leftOld = self._frame.offsetLeft,
+                        topOld = self._frame.offsetTop,
+                        left = event.clientX - self._frameState.mouseX + leftOld,
+                        top = event.clientY - self._frameState.mouseY + topOld;
+                    self._frameState.mouseX = event.clientX;
+                    self._frameState.mouseY = event.clientY;
+                    self._refrashPosFrame(left, top);
+                }
+            });
+        },
+        _attachFrameMouseUpEvent: function(){
+            var self = this;
+            document.addEventListener(EVENT_MOUSE_UP, function(event){
+                event.preventDefault();
+                event.stopPropagation();
+                self._frameState.dragable = false;
+            });
+        },
+        _attachResizeMouseDownEvent: function(){
+            var self = this;
+            this._resize.addEventListener(EVENT_MOUSE_DOWN, function(event){
+                event.stopImmediatePropagation();
+                self._resizeState.dragable = true;
+                self._resizeState.mouseX = event.clientX;
+                self._resizeState.mouseY = event.clientY;
+            });
+        },
+        _attachResizeMouseMoveEvent: function(){
+            var self = this;
+            document.addEventListener(EVENT_MOUSE_MOVE, function(event){
+                if (self._resizeState.dragable) {
+                    var widthOld = self._frame.clientWidth,
+                        heightOld = self._frame.clientHeight,
+                        width = event.clientX - self._resizeState.mouseX + widthOld,
+                        height = event.clientY - self._resizeState.mouseY + heightOld;
+                    self._resizeState.mouseX = event.clientX;
+                    self._resizeState.mouseY = event.clientY;
+                    self._refrashSizeFrame(width, height);
+                }
+            });
+        },
+        _attachResizeMouseUpEvent: function(){
+            var self = this;
+            document.addEventListener(EVENT_MOUSE_UP, function(event){
+                event.preventDefault();
+                event.stopPropagation();
+                self._resizeState.dragable = false;
+            });
+        },
+        _attachImageMouseDownEvent: function(){
+            var self = this;
+            this._membrane.addEventListener(EVENT_MOUSE_DOWN, function(event){
+                self._imageState.dragable = true;
+                self._imageState.mouseX = event.clientX;
+                self._imageState.mouseY = event.clientY;
+            });
+        },
+        _attachImageMouseMoveEvent: function(){
+            var self = this;
+            this._membrane.addEventListener(EVENT_MOUSE_MOVE, function(event){
+                if (self._imageState.dragable) {
+                    var leftOld = getComputedStyle(self._image)['left'],
+                        topOld = getComputedStyle(self._image)['top'],
+                        left = event.clientX - self._imageState.mouseX + parseFloat(leftOld),
+                        top = event.clientY - self._imageState.mouseY + parseFloat(topOld);
+                    self._imageState.mouseX = event.clientX;
+                    self._imageState.mouseY = event.clientY;
+                    self._refrashPosImage(left, top);
+
+                    self._frameState.mouseX = event.clientX;
+                    self._frameState.mouseY = event.clientY;
+                    self._refrashPosFrame(
+                        parseFloat(getComputedStyle(self._frame)['left']),
+                        parseFloat(getComputedStyle(self._frame)['top'])
+                    );
+                }
+            });
+        },
+        _attachImageMouseUpEvent: function(){
+            var self = this;
+            this._membrane.addEventListener(EVENT_MOUSE_UP, function(event){
+                event.preventDefault();
+                event.stopPropagation();
+                self._imageState.dragable = false;
+            });
+        },
+        _attachResizeWorkareaEvent: function(){
+            var self = this;
+            window.addEventListener(EVENT_RESIZE, function(){
+                self._initRatio();
+                self._initImage();
+                self._initFrame();
+            });
+        },
+        _attachCroppedEvent: function(){
+            var self = this;
+            this._cb.addEventListener(EVENT_CB_CROPPED, function(event){
+                self._addData(event.detail.data);
+                self._nextVariant();
+            });
+        }
+    };
+
+    /**
+     * @param {HTMLElement|String|Object} cb
+     * @param {Object} [o]
+     * @returns {Cropbox}
+     */
+    function Cropbox(cb, o){
+        if (typeof cb == 'object') {
+            o = cb;
+        } else {
+            o = Object.assign(o || {}, {cb: cb});
+        }
+        this._configurate(o);
+        this._initEvents();
+    }
+
+    Cropbox.prototype = Object.assign(Cropbox.prototype, publicMethods, protectedMethods, events);
 
     return Cropbox;
 })(window, document);
