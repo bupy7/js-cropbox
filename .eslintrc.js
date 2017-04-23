@@ -13,7 +13,6 @@ module.exports = {
     },
     globals: {
         'getComputedStyle': true,
-        'CustomEvent': true,
-        'Cropbox': true
+        'CustomEvent': true
     }
 };
