@@ -9,7 +9,10 @@
         EVENT_RESIZE = 'resize',
         EVENT_LOAD = 'load',
         EVENT_CB_CROPPED = 'cb.cropped',
-        EVENT_CB_RESET = 'cb.reset';
+        EVENT_CB_RESET = 'cb.reset',
+        EVENT_CB_DISABLED_CTRLS = 'cb.disabledCtrls',
+        EVENT_CB_ENABLED_CTRLS = 'cb.enabledCtrls',
+        EVENT_CB_LOADED = 'cb.loaded';
 
     var publicMethods = {
         zoomIn: function(){
@@ -41,6 +44,7 @@
             this._clearData();
             this._resetVariant();
             this._hideWorkarea();
+            this._disableControls();
             this._trigger(EVENT_CB_RESET);
         },
         crop: function(){
@@ -197,6 +201,10 @@
              * @type {integer}
              */
             this._indexVariant = 0;
+            /**
+             * @type {Boolean}
+             */
+            this._disabledControls = false;
 
             // init
             this._cb = typeof o.cb == 'string' ? document.querySelector(o.cb) : o.cb;
@@ -376,6 +384,7 @@
             this._data.push(data);
         },
         _start: function(){
+            this._enableControls();
             this._clearData();
             this._resetVariant();
             this._showWorkarea();
@@ -384,7 +393,16 @@
             this._initFrame();
         },
         _stop: function(){
+            this._disableControls();
             this._hideWorkarea();
+        },
+        _disableControls: function(){
+            this._disabledControls = true;
+            this._trigger(EVENT_CB_DISABLED_CTRLS);
+        },
+        _enableControls: function(){
+            this._disabledControls = false;
+            this._trigger(EVENT_CB_ENABLED_CTRLS);
         },
         _trigger: function(name, data){
             if (window.CustomEvent) {
@@ -404,6 +422,7 @@
                     self._start();
                 });
                 self._image.src = this.src;
+                self._trigger(EVENT_CB_LOADED);
             });
         },
         _attachFrameMouseDownEvent: function(){
