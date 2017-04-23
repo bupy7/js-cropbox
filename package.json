@@ -26,16 +26,11 @@
     "cssnano": "3.10.0",
     "cssnano-cli": "1.0.5",
     "grunt": "1.0.1",
-    "jscs": "3.0.7",
-    "jshint": "2.9.4",
     "uglify-js": "2.8.22"
   },
   "scripts": {
-    "cs": "./node_modules/.bin/jscs --fix --preset=airbnb src/js/cropbox.js",
-    "checking": "./node_modules/.bin/jshint src/js/cropbox.js",
     "compress:css": "./node_modules/.bin/cssnano src/css/cropbox.css build/cropbox.min.css",
     "compress:js": "./node_modules/.bin/uglifyjs src/js/cropbox.js -o build/cropbox.min.js -c -m --comments /^!/",
-    "compress": "npm run compress:css && npm run compress:js",
-    "build": "npm run checking && npm run compress"
+    "compress": "npm run compress:css && npm run compress:js"
   }
 }
