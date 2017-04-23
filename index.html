@@ -134,12 +134,176 @@
                 </div>
             </div>
             <h2>Source code of example</h2>
-            <h4>CSS</h4>
-<pre class="brush: css;"></pre>
-            <h4>HTML</h4>
-<pre class="brush: html;"></pre>
             <h4>JS</h4>
-<pre class="brush: js;"></pre>
+<pre class="brush: js;">
+var cropbox = new Cropbox(&apos;#plugin&apos;, {
+    variants: [
+        {
+            width: 200,
+            height: 200,
+            minWidth: 180,
+            minHeight: 200,
+            maxWidth: 350,
+            maxHeight: 350
+        },
+        {
+            width: 150,
+            height: 200
+        }
+    ]
+});
+// zooming
+var zoomInBtn = document.querySelector(&apos;.btn-zoom-in&apos;);
+zoomInBtn.addEventListener(&apos;click&apos;, function(){
+    cropbox.zoomIn();
+});
+var zoomOutBtn = document.querySelector(&apos;.btn-zoom-out&apos;);
+zoomOutBtn.addEventListener(&apos;click&apos;, function(){
+    cropbox.zoomOut();
+});
+cropbox.getMembrane().addEventListener(&apos;wheel&apos;, function(event){
+    if (event.deltaY &lt; 0) {
+        cropbox.zoomIn();
+    } else {
+        cropbox.zoomOut();
+    }
+    event.preventDefault ? event.preventDefault() : (event.returnValue = false);
+});
+// image loading from a file
+var fileInput = document.querySelector(&apos;input[type=&quot;file&quot;]&apos;);
+fileInput.addEventListener(&apos;change&apos;, function(){
+    var fileReader = new FileReader();
+    fileReader.readAsDataURL(this.files[0]);
+    fileReader.addEventListener(&apos;load&apos;, function(event){
+        cropbox.load(event.target.result);
+    });
+});
+// reset
+var resetBtn = document.querySelector(&apos;.btn-reset&apos;);
+resetBtn.addEventListener(&apos;click&apos;, function(){
+    cropbox.reset();
+});
+// crop
+var cropBtn = document.querySelector(&apos;.btn-crop&apos;);
+cropBtn.addEventListener(&apos;click&apos;, function(){
+    cropbox.crop();
+});
+// the cropped event
+cropbox.getCb().addEventListener(&apos;cb.cropped&apos;, function(event){
+    // add image to the container
+    var img = new Image;
+    img.src = event.detail.data.image;
+    img.setAttribute(&apos;style&apos;, &apos;margin-right: 5px; margin-bottom: 5px&apos;);
+    img.className = &apos;img-thumbnail&apos;;
+    document.querySelector(&apos;#cropped-container .panel-body&apos;).appendChild(img);
+    // update inforamtion about crop
+    document.querySelector(&apos;#data&apos;).value = JSON.stringify(cropbox.getData());
+});
+// the reset event
+function resetHandler(){
+    // clear the container
+    document.querySelector(&apos;#cropped-container .panel-body&apos;).innerHTML = &apos;&apos;;
+    // clear information about crop
+    document.querySelector(&apos;#data&apos;).value = &apos;&apos;;
+};
+cropbox.getCb().addEventListener(&apos;cb.reset&apos;, resetHandler);
+// the loaded event
+cropbox.getCb().addEventListener(&apos;cb.loaded&apos;, resetHandler);
+// the disabled/enabled event
+function disabledHandler(){
+    zoomInBtn.setAttribute(&apos;disabled&apos;, &apos;disabled&apos;);
+    zoomOutBtn.setAttribute(&apos;disabled&apos;, &apos;disabled&apos;);
+    cropBtn.setAttribute(&apos;disabled&apos;, &apos;disabled&apos;);
+};
+disabledHandler();
+cropbox.getCb().addEventListener(&apos;cb.disabledCtrls&apos;, disabledHandler);
+cropbox.getCb().addEventListener(&apos;cb.enabledCtrls&apos;, function(){
+    zoomInBtn.removeAttribute(&apos;disabled&apos;);
+    zoomOutBtn.removeAttribute(&apos;disabled&apos;);
+    cropBtn.removeAttribute(&apos;disabled&apos;);
+});
+</pre>
+            <h4>HTML</h4>
+<pre class="brush: html;">
+&lt;div id=&quot;plugin&quot; class=&quot;cropbox&quot;&gt;
+    &lt;div class=&quot;workarea-cropbox&quot;&gt;
+        &lt;div class=&quot;bg-cropbox&quot;&gt;
+            &lt;img class=&quot;image-cropbox&quot; crossorigin=&quot;anonymous&quot;&gt;
+            &lt;div class=&quot;membrane-cropbox&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;frame-cropbox&quot;&gt;
+            &lt;div class=&quot;resize-cropbox&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;form-inline&quot;&gt;
+    &lt;div class=&quot;form-group&quot;&gt;
+        &lt;span class=&quot;btn btn-primary btn-file&quot;&gt;
+            &lt;i class=&quot;glyphicon glyphicon-folder-open&quot;&gt;&lt;/i&gt;
+            Browse &lt;input type=&quot;file&quot; accept=&quot;image/*&quot;&gt;
+        &lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;form-group&quot;&gt;
+        &lt;div class=&quot;btn-group&quot;&gt;
+            &lt;button type=&quot;button&quot; class=&quot;btn btn-success btn-crop&quot;&gt;
+                &lt;i class=&quot;glyphicon glyphicon-scissors&quot;&gt;&lt;/i&gt; Crop
+            &lt;/button&gt;
+            &lt;button type=&quot;button&quot; class=&quot;btn btn-warning btn-reset&quot;&gt;
+                &lt;i class=&quot;glyphicon glyphicon-repeat&quot;&gt;&lt;/i&gt; Reset
+            &lt;/button&gt;
+            &lt;button type=&quot;button&quot; class=&quot;btn btn-default btn-zoom-out&quot;&gt;
+                &lt;i class=&quot;glyphicon glyphicon-minus&quot;&gt;&lt;/i&gt;
+            &lt;/button&gt;
+            &lt;button type=&quot;button&quot; class=&quot;btn btn-default btn-zoom-in&quot;&gt;
+                &lt;i class=&quot;glyphicon glyphicon-plus&quot;&gt;&lt;/i&gt;
+            &lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;br&gt;
+&lt;div id=&quot;cropped-container&quot; class=&quot;panel panel-success&quot;&gt;
+    &lt;div class=&quot;panel-heading&quot;&gt;&lt;h3 class=&quot;panel-title&quot;&gt;Result of cropping&lt;/h3&gt;&lt;/div&gt;
+    &lt;div class=&quot;panel-body&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;panel panel-info&quot;&gt;
+    &lt;div class=&quot;panel-heading&quot;&gt;&lt;h3 class=&quot;panel-title&quot;&gt;Info of cropping&lt;/h3&gt;&lt;/div&gt;
+    &lt;div class=&quot;panel-body&quot;&gt;
+        &lt;textarea id=&quot;data&quot; class=&quot;form-control&quot; rows=&quot;5&quot;&gt;&lt;/textarea&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</pre>
+            <h4>CSS</h4>
+<pre class="brush: css;">
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+div.cropbox .cropped {
+    margin-top: 10px;
+}
+.syntaxhighlighter table .container:before {
+    display: none !important;
+}
+footer {
+    margin-top: 10px;
+    border-top: #cdcdcd 1px solid;
+}
+</pre>
         </div>
         <script src="bower_components/jquery/dist/jquery.min.js"></script>
         <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -163,14 +327,14 @@
             });
             // zooming
             var zoomInBtn = document.querySelector('.btn-zoom-in');
-            zoomInBtn.addEventListener('click', function() {
+            zoomInBtn.addEventListener('click', function(){
                 cropbox.zoomIn();
             });
             var zoomOutBtn = document.querySelector('.btn-zoom-out');
-            zoomOutBtn.addEventListener('click', function() {
+            zoomOutBtn.addEventListener('click', function(){
                 cropbox.zoomOut();
             });
-            cropbox.getMembrane().addEventListener('wheel', function(event) {
+            cropbox.getMembrane().addEventListener('wheel', function(event){
                 if (event.deltaY < 0) {
                     cropbox.zoomIn();
                 } else {
@@ -180,25 +344,25 @@
             });
             // image loading from a file
             var fileInput = document.querySelector('input[type="file"]');
-            fileInput.addEventListener('change', function() {
+            fileInput.addEventListener('change', function(){
                 var fileReader = new FileReader();
                 fileReader.readAsDataURL(this.files[0]);
-                fileReader.addEventListener('load', function(event) {
+                fileReader.addEventListener('load', function(event){
                     cropbox.load(event.target.result);
                 });
             });
             // reset
             var resetBtn = document.querySelector('.btn-reset');
-            resetBtn.addEventListener('click', function() {
+            resetBtn.addEventListener('click', function(){
                 cropbox.reset();
             });
             // crop
             var cropBtn = document.querySelector('.btn-crop');
-            cropBtn.addEventListener('click', function() {
+            cropBtn.addEventListener('click', function(){
                 cropbox.crop();
             });
             // the cropped event
-            cropbox.getCb().addEventListener('cb.cropped', function(event) {
+            cropbox.getCb().addEventListener('cb.cropped', function(event){
                 // add image to the container
                 var img = new Image;
                 img.src = event.detail.data.image;
@@ -209,11 +373,27 @@
                 document.querySelector('#data').value = JSON.stringify(cropbox.getData());
             });
             // the reset event
-            cropbox.getCb().addEventListener('cb.reset', function() {
+            function resetHandler(){
                 // clear the container
                 document.querySelector('#cropped-container .panel-body').innerHTML = '';
                 // clear information about crop
                 document.querySelector('#data').value = '';
+            };
+            cropbox.getCb().addEventListener('cb.reset', resetHandler);
+            // the loaded event
+            cropbox.getCb().addEventListener('cb.loaded', resetHandler);
+            // the disabled/enabled event
+            function disabledHandler(){
+                zoomInBtn.setAttribute('disabled', 'disabled');
+                zoomOutBtn.setAttribute('disabled', 'disabled');
+                cropBtn.setAttribute('disabled', 'disabled');
+            };
+            disabledHandler();
+            cropbox.getCb().addEventListener('cb.disabledCtrls', disabledHandler);
+            cropbox.getCb().addEventListener('cb.enabledCtrls', function(){
+                zoomInBtn.removeAttribute('disabled');
+                zoomOutBtn.removeAttribute('disabled');
+                cropBtn.removeAttribute('disabled');
             });
         </script>
         <footer>
