@@ -2,7 +2,7 @@
   "name": "js-cropbox",
   "version": "0.9.0",
   "description": "A lightweight and simple js extension to crop your image.",
-  "main": "dist/cropbox.min.js",
+  "main": "build/cropbox.min.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/bupy7/js-cropbox.git"
