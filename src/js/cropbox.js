@@ -16,7 +16,7 @@ window.Cropbox = (function(window, document) {
 
     var publicMethods = {
         /**
-         * @param {number} step
+         * @param {Number} step
          */
         scale: function(step) {
             if (this._disabledControls) {
@@ -259,8 +259,8 @@ window.Cropbox = (function(window, document) {
             }
         },
         /**
-         * @param {number} left
-         * @param {number} top
+         * @param {Number} left
+         * @param {Number} top
          */
         _refrashPosFrame: function(left, top) {
             var imgLeft = this._image.offsetLeft,
@@ -286,8 +286,8 @@ window.Cropbox = (function(window, document) {
             this._frame.style.backgroundPosition = x + 'px ' + y + 'px';
         },
         /**
-         * @param {number} width
-         * @param {number} height
+         * @param {Number} width
+         * @param {Number} height
          */
         _refrashSizeFrame: function(width, height) {
             var imgLeft = this._image.offsetLeft,
@@ -334,15 +334,15 @@ window.Cropbox = (function(window, document) {
             this._frame.style.height = height + 'px';
         },
         /**
-         * @param {number} left
-         * @param {number} top
+         * @param {Number} left
+         * @param {Number} top
          */
         _refrashPosImage: function(left, top) {
             this._image.style.left = left + 'px';
             this._image.style.top = top + 'px';
         },
         /**
-         * @param {number} ratio
+         * @param {Number} ratio
          */
         _refreshRatio: function(ratio) {
             var oldRatio = this._ratio;
