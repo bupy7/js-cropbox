@@ -151,13 +151,13 @@ class or as option:
 
 **As a first argument:**
 
-```
+```js
 var cropbox = new Cropbox('#plugin');
 ```
 
 **As an option:**
 
-```
+```js
 var cropbox = new Cropbox({
     cb: '#plugin'
 });
