@@ -120,10 +120,10 @@
                         <button type="button" class="btn btn-warning btn-reset">
                             <i class="glyphicon glyphicon-repeat"></i> Reset
                         </button>
-                        <button type="button" class="btn btn-default btn-zoom-out">
+                        <button type="button" class="btn btn-default btn-scale-out">
                             <i class="glyphicon glyphicon-minus"></i>
                         </button>
-                        <button type="button" class="btn btn-default btn-zoom-in">
+                        <button type="button" class="btn btn-default btn-scale-in">
                             <i class="glyphicon glyphicon-plus"></i>
                         </button>
                     </div>
@@ -159,20 +159,20 @@ var cropbox = new Cropbox(&apos;#plugin&apos;, {
         }
     ]
 });
-// zooming
-var zoomInBtn = document.querySelector(&apos;.btn-zoom-in&apos;);
-zoomInBtn.addEventListener(&apos;click&apos;, function(){
-    cropbox.zoomIn(1.05);
+// scaling
+var scaleInBtn = document.querySelector(&apos;.btn-scale-in&apos;);
+scaleInBtn.addEventListener(&apos;click&apos;, function(){
+    cropbox.scale(1.05);
 });
-var zoomOutBtn = document.querySelector(&apos;.btn-zoom-out&apos;);
-zoomOutBtn.addEventListener(&apos;click&apos;, function(){
-    cropbox.zoomOut(0.95);
+var scaleOutBtn = document.querySelector(&apos;.btn-scale-out&apos;);
+scaleOutBtn.addEventListener(&apos;click&apos;, function(){
+    cropbox.scale(0.95);
 });
 cropbox.getMembrane().addEventListener(&apos;wheel&apos;, function(event){
     if (event.deltaY &lt; 0) {
-        cropbox.zoomIn();
+        cropbox.scale(1.01);
     } else {
-        cropbox.zoomOut();
+        cropbox.scale(0.99);
     }
     event.preventDefault ? event.preventDefault() : (event.returnValue = false);
 });
@@ -218,15 +218,15 @@ cropbox.getCb().addEventListener(&apos;cb.reset&apos;, resetHandler);
 cropbox.getCb().addEventListener(&apos;cb.loaded&apos;, resetHandler);
 // the disabled/enabled event
 function disabledHandler(){
-    zoomInBtn.setAttribute(&apos;disabled&apos;, &apos;disabled&apos;);
-    zoomOutBtn.setAttribute(&apos;disabled&apos;, &apos;disabled&apos;);
+    scaleInBtn.setAttribute(&apos;disabled&apos;, &apos;disabled&apos;);
+    scaleOutBtn.setAttribute(&apos;disabled&apos;, &apos;disabled&apos;);
     cropBtn.setAttribute(&apos;disabled&apos;, &apos;disabled&apos;);
 };
 disabledHandler();
 cropbox.getCb().addEventListener(&apos;cb.disabledCtrls&apos;, disabledHandler);
 cropbox.getCb().addEventListener(&apos;cb.enabledCtrls&apos;, function(){
-    zoomInBtn.removeAttribute(&apos;disabled&apos;);
-    zoomOutBtn.removeAttribute(&apos;disabled&apos;);
+    scaleInBtn.removeAttribute(&apos;disabled&apos;);
+    scaleOutBtn.removeAttribute(&apos;disabled&apos;);
     cropBtn.removeAttribute(&apos;disabled&apos;);
 });
 </pre>
@@ -258,10 +258,10 @@ cropbox.getCb().addEventListener(&apos;cb.enabledCtrls&apos;, function(){
             &lt;button type=&quot;button&quot; class=&quot;btn btn-warning btn-reset&quot;&gt;
                 &lt;i class=&quot;glyphicon glyphicon-repeat&quot;&gt;&lt;/i&gt; Reset
             &lt;/button&gt;
-            &lt;button type=&quot;button&quot; class=&quot;btn btn-default btn-zoom-out&quot;&gt;
+            &lt;button type=&quot;button&quot; class=&quot;btn btn-default btn-scale-out&quot;&gt;
                 &lt;i class=&quot;glyphicon glyphicon-minus&quot;&gt;&lt;/i&gt;
             &lt;/button&gt;
-            &lt;button type=&quot;button&quot; class=&quot;btn btn-default btn-zoom-in&quot;&gt;
+            &lt;button type=&quot;button&quot; class=&quot;btn btn-default btn-scale-in&quot;&gt;
                 &lt;i class=&quot;glyphicon glyphicon-plus&quot;&gt;&lt;/i&gt;
             &lt;/button&gt;
         &lt;/div&gt;
@@ -339,20 +339,20 @@ footer {
                     }
                 ]
             });
-            // zooming
-            var zoomInBtn = document.querySelector('.btn-zoom-in');
-            zoomInBtn.addEventListener('click', function(){
-                cropbox.zoomIn(1.05);
+            // scaling
+            var scaleInBtn = document.querySelector('.btn-scale-in');
+            scaleInBtn.addEventListener('click', function(){
+                cropbox.scale(1.05);
             });
-            var zoomOutBtn = document.querySelector('.btn-zoom-out');
-            zoomOutBtn.addEventListener('click', function(){
-                cropbox.zoomOut(0.95);
+            var scaleOutBtn = document.querySelector('.btn-scale-out');
+            scaleOutBtn.addEventListener('click', function(){
+                cropbox.scale(0.95);
             });
             cropbox.getMembrane().addEventListener('wheel', function(event){
                 if (event.deltaY < 0) {
-                    cropbox.zoomIn();
+                    cropbox.scale(1.01);
                 } else {
-                    cropbox.zoomOut();
+                    cropbox.scale(0.99);
                 }
                 event.preventDefault ? event.preventDefault() : (event.returnValue = false);
             });
@@ -398,15 +398,15 @@ footer {
             cropbox.getCb().addEventListener('cb.loaded', resetHandler);
             // the disabled/enabled event
             function disabledHandler(){
-                zoomInBtn.setAttribute('disabled', 'disabled');
-                zoomOutBtn.setAttribute('disabled', 'disabled');
+                scaleInBtn.setAttribute('disabled', 'disabled');
+                scaleOutBtn.setAttribute('disabled', 'disabled');
                 cropBtn.setAttribute('disabled', 'disabled');
             };
             disabledHandler();
             cropbox.getCb().addEventListener('cb.disabledCtrls', disabledHandler);
             cropbox.getCb().addEventListener('cb.enabledCtrls', function(){
-                zoomInBtn.removeAttribute('disabled');
-                zoomOutBtn.removeAttribute('disabled');
+                scaleInBtn.removeAttribute('disabled');
+                scaleOutBtn.removeAttribute('disabled');
                 cropBtn.removeAttribute('disabled');
             });
         </script>
