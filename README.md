@@ -151,13 +151,13 @@ The main html element of cropbox container.
 You can set it option as first argument of the construct method of `Cropbox`
 class or as option:
 
-**As first argument:**
+**As a first argument:**
 
 ```
 var cropbox = new Cropbox('#plugin');
 ```
 
-**As option:**
+**As an option:**
 
 ```
 var cropbox = new Cropbox({
