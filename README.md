@@ -142,9 +142,7 @@ cropbox.getCb().addEventListener('cb.enabledCtrls', function(){
 Options
 -------
 
-### Required
-
-#### {String|HTMLElement} `cb`
+### {String|HTMLElement} `cb`
 
 The main html element of cropbox container.
 
@@ -165,9 +163,7 @@ var cropbox = new Cropbox({
 });
 ```
 
-### Optional
-
-#### {Object} `variants`
+### {Object} `[variants]`
 
 Variants of crop image. Supported a few crop settings.
 
