@@ -1,0 +1,24 @@
+{
+  "name": "js-cropbox",
+  "description": "A lightweight and simple js extension to crop your image.",
+  "main": "build/cropbox.min.js",
+  "authors": [
+    "Belosludcev Vasily <bupy765@gmail.com>"
+  ],
+  "license": "BSD-3-Clause",
+  "keywords": [
+    "js",
+    "cropbox",
+    "extensions",
+    "module",
+    "plugin",
+    "image",
+    "javascript"
+  ],
+  "homepage": "https://github.com/bupy7/js-cropbox",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ]
+}
