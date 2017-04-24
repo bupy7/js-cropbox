@@ -15,24 +15,23 @@ window.Cropbox = (function(window, document) {
         EVENT_CB_LOADED = 'cb.loaded';
 
     var publicMethods = {
-        zoomIn: function() {
-            this._ratio *= 1.01;
-            var width = this._sourceImage.width * this._ratio,
-                height = this._sourceImage.height * this._ratio;
-            this._zoom(width, height);
-            this._refrashPosFrame(this._frame.offsetLeft, this._frame.offsetTop);
-        },
-        zoomOut: function() {
-            var oldRatio = this._ratio;
-            this._ratio *= 0.99;
-            var width = this._sourceImage.width * this._ratio,
-                height = this._sourceImage.height * this._ratio;
-            if (width >= this._frame.clientWidth && height >= this._frame.clientHeight) {
-                this._zoom(width, height);
-                this._refrashPosFrame(this._frame.offsetLeft, this._frame.offsetTop);
-            } else {
-                this._ratio = oldRatio;
+        /**
+         * @param {number} [step=1.01]
+         */
+        zoomIn: function(step) {
+            if (this._disabledControls) {
+                return;
             }
+            this._zoom(this._ratio * (step || 1.01));
+        },
+        /**
+         * @param {number} [step0.99]
+         */
+        zoomOut: function(step) {
+            if (this._disabledControls) {
+                return;
+            }
+            this._zoom(this._ratio * (step || 0.99));
         },
         /**
          * @param {String} src
@@ -48,6 +47,9 @@ window.Cropbox = (function(window, document) {
             this._trigger(EVENT_CB_RESET);
         },
         crop: function() {
+            if (this._disabledControls) {
+                return;
+            }
             var x = this._frame.offsetLeft - this._image.offsetLeft,
                 y = this._frame.offsetTop - this._image.offsetTop,
                 frameWidth = this._frame.clientWidth,
@@ -260,11 +262,10 @@ window.Cropbox = (function(window, document) {
                 wRatio = variant.width / this._sourceImage.width,
                 hRatio = variant.height / this._sourceImage.height;
             if (wRatio > hRatio) {
-                this._ratio = wRatio;
+                this._zoom(wRatio);
             } else {
-                this._ratio = hRatio;
+                this._zoom(hRatio);
             }
-            this._zoom(this._sourceImage.width * this._ratio, this._sourceImage.height * this._ratio);
         },
         /**
          * @param {number} left
@@ -350,13 +351,21 @@ window.Cropbox = (function(window, document) {
             this._image.style.top = top + 'px';
         },
         /**
-         * @param {number} width
-         * @param {number} height
+         * @param {number} ratio
          */
-        _zoom: function(width, height) {
-            this._image.style.width = width + 'px';
-            this._image.style.height = height + 'px';
-            this._frame.style.backgroundSize = width + 'px ' + height + 'px';
+        _zoom: function(ratio) {
+            var oldRatio = this._ratio;
+            this._ratio = ratio;
+            var width = this._sourceImage.width * this._ratio,
+                height = this._sourceImage.height * this._ratio;
+            if (width >= this._frame.clientWidth && height >= this._frame.clientHeight) {
+                this._image.style.width = width + 'px';
+                this._image.style.height = height + 'px';
+                this._frame.style.backgroundSize = width + 'px ' + height + 'px';
+                this._refrashPosFrame(this._frame.offsetLeft, this._frame.offsetTop);
+            } else {
+                this._ratio = oldRatio;
+            }
         },
         _showWorkarea: function() {
             this._workarea.style.display = 'block';
