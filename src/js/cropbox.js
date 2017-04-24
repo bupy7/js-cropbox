@@ -16,22 +16,13 @@ window.Cropbox = (function(window, document) {
 
     var publicMethods = {
         /**
-         * @param {number} [step=1.01]
+         * @param {number} step
          */
-        zoomIn: function(step) {
+        scale: function(step) {
             if (this._disabledControls) {
                 return;
             }
-            this._zoom(this._ratio * (step || 1.01));
-        },
-        /**
-         * @param {number} [step0.99]
-         */
-        zoomOut: function(step) {
-            if (this._disabledControls) {
-                return;
-            }
-            this._zoom(this._ratio * (step || 0.99));
+            this._refreshRatio(this._ratio * step);
         },
         /**
          * @param {String} src
@@ -262,9 +253,9 @@ window.Cropbox = (function(window, document) {
                 wRatio = variant.width / this._sourceImage.width,
                 hRatio = variant.height / this._sourceImage.height;
             if (wRatio > hRatio) {
-                this._zoom(wRatio);
+                this._refreshRatio(wRatio);
             } else {
-                this._zoom(hRatio);
+                this._refreshRatio(hRatio);
             }
         },
         /**
@@ -353,7 +344,7 @@ window.Cropbox = (function(window, document) {
         /**
          * @param {number} ratio
          */
-        _zoom: function(ratio) {
+        _refreshRatio: function(ratio) {
             var oldRatio = this._ratio;
             this._ratio = ratio;
             var width = this._sourceImage.width * this._ratio,
