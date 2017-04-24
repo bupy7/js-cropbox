@@ -14,6 +14,12 @@ Via [NPM](https://www.npmjs.com/):
 npm install js-cropbox
 ```
 
+Via [Bower](https://bower.io/)
+
+```
+bower install js-cropbox
+```
+
 Usage
 -----
 
