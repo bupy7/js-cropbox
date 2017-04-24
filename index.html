@@ -26,11 +26,8 @@
                 cursor: inherit;
                 display: block;
             }
-            div.cropbox .cropped {
-                margin-top: 10px;
-            }
-            div.cropbox .workarea-cropbox,
-            div.cropbox .bg-cropbox {
+            #plugin .workarea-cropbox,
+            #plugin .bg-cropbox {
                 height: 500px;
                 min-height: 500px;
                 width: 500px;
@@ -94,10 +91,10 @@
                     </a>
                 </p>
             </div>
-            <div id="plugin" class="cropbox">
+            <div id="plugin">
                 <div class="workarea-cropbox">
                     <div class="bg-cropbox">
-                        <img class="image-cropbox" crossorigin="anonymous">
+                        <img class="image-cropbox">
                         <div class="membrane-cropbox"></div>
                     </div>
                     <div class="frame-cropbox">
@@ -235,7 +232,7 @@ cropbox.getCb().addEventListener(&apos;cb.enabledCtrls&apos;, function(){
 &lt;div id=&quot;plugin&quot; class=&quot;cropbox&quot;&gt;
     &lt;div class=&quot;workarea-cropbox&quot;&gt;
         &lt;div class=&quot;bg-cropbox&quot;&gt;
-            &lt;img class=&quot;image-cropbox&quot; crossorigin=&quot;anonymous&quot;&gt;
+            &lt;img class=&quot;image-cropbox&quot;&gt;
             &lt;div class=&quot;membrane-cropbox&quot;&gt;&lt;/div&gt;
         &lt;/div&gt;
         &lt;div class=&quot;frame-cropbox&quot;&gt;
@@ -300,11 +297,8 @@ cropbox.getCb().addEventListener(&apos;cb.enabledCtrls&apos;, function(){
     cursor: inherit;
     display: block;
 }
-div.cropbox .cropped {
-    margin-top: 10px;
-}
-div.cropbox .workarea-cropbox,
-div.cropbox .bg-cropbox {
+#plugin .workarea-cropbox,
+#plugin .bg-cropbox {
     height: 500px;
     min-height: 500px;
     width: 500px;
