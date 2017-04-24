@@ -29,6 +29,13 @@
             div.cropbox .cropped {
                 margin-top: 10px;
             }
+            div.cropbox .workarea-cropbox,
+            div.cropbox .bg-cropbox {
+                height: 500px;
+                min-height: 500px;
+                width: 500px;
+                min-width: 500px;
+            }
             .syntaxhighlighter table .container:before {
                 display: none !important;
             }
@@ -155,11 +162,11 @@ var cropbox = new Cropbox(&apos;#plugin&apos;, {
 // zooming
 var zoomInBtn = document.querySelector(&apos;.btn-zoom-in&apos;);
 zoomInBtn.addEventListener(&apos;click&apos;, function(){
-    cropbox.zoomIn();
+    cropbox.zoomIn(1.05);
 });
 var zoomOutBtn = document.querySelector(&apos;.btn-zoom-out&apos;);
 zoomOutBtn.addEventListener(&apos;click&apos;, function(){
-    cropbox.zoomOut();
+    cropbox.zoomOut(0.95);
 });
 cropbox.getMembrane().addEventListener(&apos;wheel&apos;, function(event){
     if (event.deltaY &lt; 0) {
@@ -191,7 +198,7 @@ cropBtn.addEventListener(&apos;click&apos;, function(){
 // the cropped event
 cropbox.getCb().addEventListener(&apos;cb.cropped&apos;, function(event){
     // add image to the container
-    var img = new Image;
+    var img = document.createElement(&apos;img&apos;);
     img.src = event.detail.data.image;
     img.setAttribute(&apos;style&apos;, &apos;margin-right: 5px; margin-bottom: 5px&apos;);
     img.className = &apos;img-thumbnail&apos;;
@@ -296,6 +303,13 @@ cropbox.getCb().addEventListener(&apos;cb.enabledCtrls&apos;, function(){
 div.cropbox .cropped {
     margin-top: 10px;
 }
+div.cropbox .workarea-cropbox,
+div.cropbox .bg-cropbox {
+    height: 500px;
+    min-height: 500px;
+    width: 500px;
+    min-width: 500px;
+}
 .syntaxhighlighter table .container:before {
     display: none !important;
 }
@@ -328,11 +342,11 @@ footer {
             // zooming
             var zoomInBtn = document.querySelector('.btn-zoom-in');
             zoomInBtn.addEventListener('click', function(){
-                cropbox.zoomIn();
+                cropbox.zoomIn(1.05);
             });
             var zoomOutBtn = document.querySelector('.btn-zoom-out');
             zoomOutBtn.addEventListener('click', function(){
-                cropbox.zoomOut();
+                cropbox.zoomOut(0.95);
             });
             cropbox.getMembrane().addEventListener('wheel', function(event){
                 if (event.deltaY < 0) {
