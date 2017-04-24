@@ -1,3 +1,4 @@
-bower.json
-.eslintrc.js
-Gruntfile.js
+/bower.json
+/.eslintrc.js
+/Gruntfile.js
+/test

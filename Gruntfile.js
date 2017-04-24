@@ -4,7 +4,7 @@ module.exports = function(grunt) {
             options: {
                 configFile: '.eslintrc.js'
             },
-            target: ['src/js/*.js']
+            target: ['src/js/*.js', 'test/**/*.js']
         },
         uglify: {
             build: {

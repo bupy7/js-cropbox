@@ -8,7 +8,7 @@ module.exports = {
         'space-before-function-paren': ['error', 'never']
     },
     globals: {
-        'getComputedStyle': true,
-        'CustomEvent': true
+        getComputedStyle: true,
+        CustomEvent: true
     }
 };
