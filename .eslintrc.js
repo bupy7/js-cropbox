@@ -8,7 +8,11 @@ module.exports = {
         'space-before-function-paren': ['error', 'never']
     },
     globals: {
-        getComputedStyle: true,
-        CustomEvent: true
+        Cropbox: true,
+        assert: true
+    },
+    env: {
+        mocha: true,
+        browser: true
     }
 };

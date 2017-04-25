@@ -4,16 +4,37 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>js-cropbox test</title>
-        <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.3.2.css">
+        <link rel="stylesheet" href="../node_modules/mocha/mocha.css">
         <link rel="stylesheet" href="../build/cropbox.min.css">
     </head>
     <body>
-        <div id="qunit"></div>
-        <div id="qunit-fixture"></div>
-        <script src="https://code.jquery.com/qunit/qunit-2.3.2.js"></script>
+        <div id="mocha"></div>
+        <div id="plugin">
+            <div class="workarea-cropbox">
+                <div class="bg-cropbox">
+                    <img class="image-cropbox">
+                    <div class="membrane-cropbox"></div>
+                </div>
+                <div class="frame-cropbox">
+                    <div class="resize-cropbox"></div>
+                </div>
+            </div>
+        </div>
+        <script src="../node_modules/mocha/mocha.js"></script>
+        <script src="../node_modules/chai/chai.js"></script>
+        <script src="../node_modules/babel-polyfill/browser.js"></script>
         <script src="../build/cropbox.min.js"></script>
-        <script src="js/polyfill.js"></script>
-
+        <script>
+            mocha.setup('bdd');
+            mocha.reporter('html');
+            var assert = chai.assert;
+        </script>
         <script src="methods/load.js"></script>
+        <script>
+            // only tests run in real browser, injected script run if options.run == true
+            if (navigator.userAgent.indexOf('PhantomJS') < 0) {
+                mocha.run();
+            }
+        </script>
     </body>
 </html>

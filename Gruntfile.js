@@ -18,12 +18,22 @@ module.exports = function(grunt) {
                     'build/cropbox.min.css': 'src/css/cropbox.css'
                 }
             }
+        },
+        mocha: {
+            test: {
+                src: ['test/*.html'],
+                options: {
+                    logErrors: true,
+                    log: true
+                }
+            }
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-cssnano');
     grunt.loadNpmTasks('grunt-eslint');
+    grunt.loadNpmTasks('grunt-mocha');
 
-    grunt.registerTask('default', ['eslint', 'uglify', 'cssnano']);
+    grunt.registerTask('default', ['mocha', 'eslint', 'uglify', 'cssnano']);
 };
