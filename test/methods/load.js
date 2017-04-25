@@ -1,6 +1,9 @@
-describe('#constructor()', function() {
-    it('should create new instance', function() {
+describe('#load()', function() {
+    it('should load the image', function(done) {
         var cropbox = new Cropbox('#plugin');
-        assert.instanceOf(cropbox, Cropbox);
+        cropbox.getCb().addEventListener('cb.loaded', function() {
+            done();
+        });
+        cropbox.load('assets/image.png');
     });
 });

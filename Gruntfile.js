@@ -24,7 +24,8 @@ module.exports = function(grunt) {
                 src: ['test/*.html'],
                 options: {
                     logErrors: true,
-                    log: true
+                    log: true,
+                    reporter: 'spec'
                 }
             }
         }

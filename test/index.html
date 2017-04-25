@@ -9,6 +9,8 @@
     </head>
     <body>
         <div id="mocha"></div>
+
+        <!-- skeleton -->
         <div id="plugin">
             <div class="workarea-cropbox">
                 <div class="bg-cropbox">
@@ -20,6 +22,7 @@
                 </div>
             </div>
         </div>
+        
         <script src="../node_modules/mocha/mocha.js"></script>
         <script src="../node_modules/chai/chai.js"></script>
         <script src="../node_modules/babel-polyfill/browser.js"></script>
@@ -29,7 +32,11 @@
             mocha.reporter('html');
             var assert = chai.assert;
         </script>
+
+        <!-- tests -->
+        <script src="methods/constructor.js"></script>
         <script src="methods/load.js"></script>
+        
         <script>
             // only tests run in real browser, injected script run if options.run == true
             if (navigator.userAgent.indexOf('PhantomJS') < 0) {
