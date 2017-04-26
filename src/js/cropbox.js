@@ -430,7 +430,7 @@ window.Cropbox = (function(window, document) {
                     self._start();
                     self._trigger(EVENT_CB_LOADED);
                 });
-                self._image.src = this.src;               
+                self._image.src = this.src;
             });
         },
         _attachFrameMouseDownEvent: function() {

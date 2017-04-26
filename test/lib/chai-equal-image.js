@@ -4,15 +4,16 @@ chai.use(function(_chai, utils) {
      */
     _chai.Assertion.addMethod('equalImage', function(expectedImg) {
         function getBase64(img) {
+            var dataUrl = null;
             if (typeof img === 'object') {
                 var canvas = document.createElement('canvas');
                 canvas.width = img.naturalWidth;
                 canvas.height = img.naturalHeight;
                 var ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0);
-                var dataUrl = canvas.toDataURL('image/png');
+                dataUrl = canvas.toDataURL('image/png');
             } else {
-                var dataUrl = img;
+                dataUrl = img;
             }
             return dataUrl.replace(/^data:image\/(png|jpg);base64,/, '');
         }

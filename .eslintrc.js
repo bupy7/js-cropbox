@@ -6,7 +6,8 @@ module.exports = {
         semi: ['error', 'always'],
         'linebreak-style': ['error', 'unix'],
         'space-before-function-paren': ['error', 'never'],
-        'no-unused-vars': 0
+        'no-unused-vars': 0,
+        eqeqeq: ['error', 'smart']
     },
     globals: {
         Cropbox: true,

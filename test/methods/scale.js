@@ -9,7 +9,7 @@ describe('#scale()', function() {
             ]
         });
         cropbox.getCb().addEventListener('cb.loaded', function() {
-            for (var i = 0; i != 2; i++) {
+            for (var i = 0; i !== 2; i++) {
                 cropbox.scale(1.05);
             }
             cropbox.scale(0.95);
