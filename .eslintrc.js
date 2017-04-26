@@ -5,11 +5,13 @@ module.exports = {
         'one-var': 0,
         semi: ['error', 'always'],
         'linebreak-style': ['error', 'unix'],
-        'space-before-function-paren': ['error', 'never']
+        'space-before-function-paren': ['error', 'never'],
+        'no-unused-vars': 0
     },
     globals: {
         Cropbox: true,
-        assert: true
+        assert: true,
+        getBase64Image: true
     },
     env: {
         mocha: true,
