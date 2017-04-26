@@ -10,8 +10,8 @@ module.exports = {
     },
     globals: {
         Cropbox: true,
-        assert: true,
-        getBase64Image: true
+        expect: true,
+        chai: true
     },
     env: {
         mocha: true,

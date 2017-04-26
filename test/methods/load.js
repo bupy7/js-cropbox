@@ -4,9 +4,7 @@ describe('#load()', function() {
             oImg = document.createElement('img');
         oImg.onload = function() {
             cropbox.getCb().addEventListener('cb.loaded', function() {
-                var img1Data = getBase64Image(oImg),
-                    img2Data = getBase64Image(cropbox.getImage());
-                assert.equal(img1Data, img2Data);
+                expect(cropbox.getImage()).to.be.equalImage(oImg);
                 done();
             });
             cropbox.load(oImg.src);

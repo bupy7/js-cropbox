@@ -25,13 +25,13 @@
         
         <script src="../node_modules/mocha/mocha.js"></script>
         <script src="../node_modules/chai/chai.js"></script>
+        <script src="lib/chai-equal-image.js"></script>
         <script src="../node_modules/babel-polyfill/browser.js"></script>
-        <script src="lib/base64-image.js"></script>
         <script src="../build/cropbox.min.js"></script>
         <script>
             mocha.setup('bdd');
             mocha.reporter('html');
-            var assert = chai.assert;
+            var expect = chai.expect;
         </script>
 
         <!-- tests -->
@@ -41,7 +41,9 @@
         <script src="methods/get-membrane.js"></script>
         <script src="methods/get-frame.js"></script>
         <script src="methods/get-workarea.js"></script>
-        
+        <script src="methods/get-resize.js"></script>
+        <script src="methods/scale.js"></script>
+
         <script>
             // only tests run in real browser, injected script run if options.run == true
             if (navigator.userAgent.indexOf('PhantomJS') < 0) {

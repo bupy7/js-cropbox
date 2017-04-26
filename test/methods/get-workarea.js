@@ -1,6 +1,6 @@
 describe('#getWorkarea()', function() {
     it('should returns HTMLElement', function() {
         var cropbox = new Cropbox('#plugin');
-        assert.equal(cropbox.getWorkarea(), document.querySelector('#plugin .workarea-cropbox'));
+        expect(cropbox.getWorkarea()).to.be.equal(document.querySelector('#plugin .workarea-cropbox'));
     });
 });
