@@ -374,11 +374,12 @@ window.Cropbox = (function(window, document) {
             if (this._variants.length <= this._indexVariant + 1) {
                 this._indexVariant = 0;
                 this._stop();
+            } else {
+                ++this._indexVariant;
+                this._initRatio();
+                this._initImage();
+                this._initFrame();
             }
-            ++this._indexVariant;
-            this._initRatio();
-            this._initImage();
-            this._initFrame();
         },
         _clearData: function() {
             this._data = [];
@@ -427,9 +428,9 @@ window.Cropbox = (function(window, document) {
             this._sourceImage.addEventListener(EVENT_LOAD, function() {
                 self._image.addEventListener(EVENT_LOAD, function() {
                     self._start();
+                    self._trigger(EVENT_CB_LOADED);
                 });
-                self._image.src = this.src;
-                self._trigger(EVENT_CB_LOADED);
+                self._image.src = this.src;               
             });
         },
         _attachFrameMouseDownEvent: function() {

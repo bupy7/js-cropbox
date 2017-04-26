@@ -11,28 +11,35 @@
         <div id="mocha"></div>
 
         <!-- skeleton -->
-        <div id="plugin">
-            <div class="workarea-cropbox">
-                <div class="bg-cropbox">
-                    <img class="image-cropbox">
-                    <div class="membrane-cropbox"></div>
-                </div>
-                <div class="frame-cropbox">
-                    <div class="resize-cropbox"></div>
+        <div id="skeleton"></div>
+        <script id="skeleton-tpl" type="text/template">
+            <div id="plugin">
+                <div class="workarea-cropbox">
+                    <div class="bg-cropbox">
+                        <img class="image-cropbox">
+                        <div class="membrane-cropbox"></div>
+                    </div>
+                    <div class="frame-cropbox">
+                        <div class="resize-cropbox"></div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </script>
         
         <script src="../node_modules/mocha/mocha.js"></script>
         <script src="../node_modules/chai/chai.js"></script>
         <script src="lib/chai-equal-image.js"></script>
         <script src="../node_modules/babel-polyfill/browser.js"></script>
+        <script src="../node_modules/object-hash/dist/object_hash.js"></script>
         <script src="../build/cropbox.min.js"></script>
         <script>
             mocha.setup('bdd');
             mocha.reporter('html');
             var expect = chai.expect;
         </script>
+
+        <!-- hooks -->
+        <script src="hooks/before-each.js"></script>
 
         <!-- tests -->
         <script src="methods/constructor.js"></script>
