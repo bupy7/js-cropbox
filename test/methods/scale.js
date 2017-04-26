@@ -15,6 +15,7 @@ describe('#scale()', function() {
             cropbox.scale(0.95);
             cropbox.getCb().addEventListener('cb.cropped', function(event) {
                 var data = event.detail.data;
+                // not test value
                 delete data.image;
                 var expectedData = {
                     dHeight: 209,
