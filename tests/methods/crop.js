@@ -40,14 +40,14 @@ describe('#crop()', function() {
                     height: 200
                 }
             ],
-            index = 0;
+            i = 0;
         cropbox.getCb().addEventListener('cb.loaded', function() {
             cropbox.getCb().addEventListener('cb.cropped', function(event) {
                 var data = event.detail.data;
                 // not test value
                 delete data.image;
-                expect(data).to.deep.equal(expectedData[index++]);
-                if (index >= 2) {
+                expect(data).to.deep.equal(expectedData[i++]);
+                if (i >= 2) {
                     done();
                 } else {
                     cropbox.crop();
