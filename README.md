@@ -1,6 +1,8 @@
 js-cropbox
 ==========
 
+[![Build Status](https://travis-ci.org/bupy7/js-cropbox.svg?branch=master)](https://travis-ci.org/bupy7/js-cropbox)
+
 A lightweight and simple js extension to crop your image.
 
 [Demo](http://bupy7.github.io/js-cropbox/)
