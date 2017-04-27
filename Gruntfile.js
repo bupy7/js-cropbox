@@ -4,7 +4,7 @@ module.exports = function(grunt) {
             options: {
                 configFile: '.eslintrc.js'
             },
-            target: ['src/js/*.js', 'test/**/*.js']
+            target: ['src/js/*.js', 'tests/**/*.js']
         },
         uglify: {
             build: {
@@ -21,7 +21,7 @@ module.exports = function(grunt) {
         },
         mocha: {
             test: {
-                src: ['test/*.html'],
+                src: ['tests/*.html'],
                 options: {
                     logErrors: true,
                     log: true,
