@@ -31,16 +31,17 @@ window.Cropbox = (function(window, document) {
             this._sourceImage.src = src;
         },
         reset: function() {
+            this._disableControls();
             this._clearData();
             this._resetVariant();
             this._hideWorkarea();
-            this._disableControls();
             this._trigger(EVENT_CB_RESET);
         },
         crop: function() {
             if (this._disabledControls) {
                 return;
             }
+            this._disableControls();
             var x = this._frame.offsetLeft - this._image.offsetLeft,
                 y = this._frame.offsetTop - this._image.offsetTop,
                 frameWidth = this._frame.clientWidth,
@@ -390,14 +391,14 @@ window.Cropbox = (function(window, document) {
         _addData: function(data) {
             this._data.push(data);
         },
-        _start: function() {
-            this._enableControls();
+        _start: function() {            
             this._clearData();
             this._resetVariant();
             this._showWorkarea();
             this._initRatio();
             this._initImage();
             this._initFrame();
+            this._enableControls();
         },
         _stop: function() {
             this._disableControls();
@@ -544,6 +545,7 @@ window.Cropbox = (function(window, document) {
             this._cb.addEventListener(EVENT_CB_CROPPED, function(event) {
                 self._addData(event.detail.data);
                 self._nextVariant();
+                self._enableControls();
             });
         }
     };
