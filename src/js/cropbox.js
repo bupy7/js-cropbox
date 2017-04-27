@@ -391,7 +391,7 @@ window.Cropbox = (function(window, document) {
         _addData: function(data) {
             this._data.push(data);
         },
-        _start: function() {            
+        _start: function() {
             this._clearData();
             this._resetVariant();
             this._showWorkarea();

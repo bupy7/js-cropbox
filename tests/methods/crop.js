@@ -1,21 +1,21 @@
 describe('#crop()', function() {
     it('should crop', function(done) {
         var cropbox = new Cropbox('#plugin', {
-            variants: [
-                {
-                    width: 200,
-                    height: 200,
-                    minWidth: 200,
-                    minHeight: 200,
-                    maxWidth: 350,
-                    maxHeight: 350
-                },
-                {
-                    width: 150,
-                    height: 200
-                }
-            ]
-        }),
+                variants: [
+                    {
+                        width: 200,
+                        height: 200,
+                        minWidth: 200,
+                        minHeight: 200,
+                        maxWidth: 350,
+                        maxHeight: 350
+                    },
+                    {
+                        width: 150,
+                        height: 200
+                    }
+                ]
+            }),
             expectedData = [
                 {
                     sWidth: 500,
@@ -53,7 +53,7 @@ describe('#crop()', function() {
                     cropbox.crop();
                 }
             });
-            cropbox.crop();        
+            cropbox.crop();
         });
         cropbox.load('assets/image.png');
     });
