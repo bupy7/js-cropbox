@@ -22,6 +22,9 @@
     "url": "https://github.com/bupy7/js-cropbox/issues"
   },
   "homepage": "https://github.com/bupy7/js-cropbox",
+  "scripts": {
+    "test": "node_modules/.bin/grunt mocha"
+  },
   "devDependencies": {
     "babel-polyfill": "^6.23.0",
     "chai": "^3.5.0",
