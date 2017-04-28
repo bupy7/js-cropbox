@@ -35,7 +35,7 @@ window.Cropbox = (function(window, document) {
             this._clearData();
             this._resetVariant();
             this._hideWorkarea();
-            this._trigger(EVENT_CB_RESET);
+            this._customTrigger(EVENT_CB_RESET);
         },
         crop: function() {
             if (this._disabledControls) {
@@ -74,7 +74,7 @@ window.Cropbox = (function(window, document) {
                 height: frameHeight,
                 image: canvas.toDataURL('image/png')
             };
-            this._trigger(EVENT_CB_CROPPED, {data: data});
+            this._customTrigger(EVENT_CB_CROPPED, {data: data});
         },
         /**
          * @returns {Array}
@@ -373,13 +373,14 @@ window.Cropbox = (function(window, document) {
         },
         _nextVariant: function() {
             if (this._variants.length <= this._indexVariant + 1) {
-                this._indexVariant = 0;
+                this._resetVariant();
                 this._stop();
             } else {
                 ++this._indexVariant;
                 this._initRatio();
                 this._initImage();
                 this._initFrame();
+                this._enableControls();
             }
         },
         _clearData: function() {
@@ -406,16 +407,20 @@ window.Cropbox = (function(window, document) {
         },
         _disableControls: function() {
             this._disabledControls = true;
-            this._trigger(EVENT_CB_DISABLED_CTRLS);
+            this._customTrigger(EVENT_CB_DISABLED_CTRLS);
         },
         _enableControls: function() {
             this._disabledControls = false;
-            this._trigger(EVENT_CB_ENABLED_CTRLS);
+            this._customTrigger(EVENT_CB_ENABLED_CTRLS);
         },
-        _trigger: function(name, data) {
+        /**
+         * @param {string} name
+         * @param {*} [data]
+         */
+        _customTrigger: function(name, data) {
             var event = null;
             if (window.CustomEvent) {
-                event = new CustomEvent(name, {detail: data});
+                event = new CustomEvent(name, {detail: data || null});
             } else {
                 event = document.createEvent('CustomEvent');
                 event.initCustomEvent(name, true, true, data);
@@ -429,7 +434,7 @@ window.Cropbox = (function(window, document) {
             this._sourceImage.addEventListener(EVENT_LOAD, function() {
                 self._image.addEventListener(EVENT_LOAD, function() {
                     self._start();
-                    self._trigger(EVENT_CB_LOADED);
+                    self._customTrigger(EVENT_CB_LOADED);
                 });
                 self._image.src = this.src;
             });
@@ -545,7 +550,6 @@ window.Cropbox = (function(window, document) {
             this._cb.addEventListener(EVENT_CB_CROPPED, function(event) {
                 self._addData(event.detail.data);
                 self._nextVariant();
-                self._enableControls();
             });
         }
     };
