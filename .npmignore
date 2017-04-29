@@ -1,4 +1,6 @@
 /bower.json
 /.eslintrc.js
 /Gruntfile.js
-/test
+/tests
+/karma.conf.js
+/.travis.yml
