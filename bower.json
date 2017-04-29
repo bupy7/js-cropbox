@@ -1,7 +1,7 @@
 {
   "name": "js-cropbox",
   "description": "A lightweight and simple js extension to crop your image.",
-  "main": "build/cropbox.min.js",
+  "main": "build/cropbox.js",
   "authors": [
     "Belosludcev Vasily <bupy765@gmail.com>"
   ],
@@ -20,6 +20,9 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "test"
+    "tests",
+    "karma.conf.js",
+    "package.json",
+    "Gruntfile.js"
   ]
 }
