@@ -1,4 +1,4 @@
-describe('#crop()', function() {
+describe('.crop()', function() {
     it('should crop', function(done) {
         var cropbox = new Cropbox('#plugin', {
                 variants: [

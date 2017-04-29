@@ -1,4 +1,4 @@
-describe('#scale()', function() {
+describe('.scale(step)', function() {
     it('should scale', function(done) {
         var cropbox = new Cropbox('#plugin', {
             variants: [

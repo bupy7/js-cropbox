@@ -1,4 +1,4 @@
-describe('#load()', function() {
+describe('.load(src)', function() {
     it('should load the image', function(done) {
         var cropbox = new Cropbox('#plugin'),
             oImg = document.createElement('img');
