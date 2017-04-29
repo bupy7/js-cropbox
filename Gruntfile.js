@@ -49,6 +49,7 @@ module.exports = function(grunt) {
                     'tests/hooks/before-each.js',
                     // tests
                     'tests/methods/*.js',
+                    'tests/events/*.js',
                     // assets
                     {pattern: 'tests/assets/*.png', watched: false, included: false, served: true, nocache: false},
                     // fixtures
