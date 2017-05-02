@@ -204,7 +204,7 @@ window.Cropbox = (function(window, document) {
             /**
              * @type {Boolean}
              */
-            this._disabledControls = false;
+            this._disabledControls = true;
 
             // init
             this._cb = typeof o.cb === 'string' ? document.querySelector(o.cb) : o.cb;
