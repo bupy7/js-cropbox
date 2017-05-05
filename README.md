@@ -271,6 +271,11 @@ An `HTMLElement` the resize control element.
 **Returns:**
 An `String` version cropbox.
 
+### `getVariants()`
+
+**Returns:**
+An `Array` contain variants for cropping.
+
 Events
 ------
 

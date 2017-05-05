@@ -123,6 +123,13 @@ window.Cropbox = (function(window, document) {
          */
         getVersion: function() {
             return VERSION;
+        },
+        /**
+         * @returns {Array}
+         * @since 0.9.2
+         */
+        getVariants: function() {
+            return this._variants;
         }
     };
     var protectedMethods = {
@@ -560,7 +567,7 @@ window.Cropbox = (function(window, document) {
      * @returns {Cropbox}
      */
     function Cropbox(cb, o) {
-        if (typeof cb === 'object') {
+        if (typeof cb === 'object' && !(cb instanceof HTMLElement)) {
             o = cb;
         } else {
             o = Object.assign(o || {}, {cb: cb});

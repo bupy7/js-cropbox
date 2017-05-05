@@ -2,7 +2,7 @@
   "name": "js-cropbox",
   "description": "A lightweight and simple js extension to crop your image.",
   "main": "build/cropbox.js",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "authors": [
     "Belosludcev Vasily <bupy765@gmail.com>"
   ],
