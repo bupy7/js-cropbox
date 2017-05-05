@@ -36,17 +36,7 @@ Usage
 **Create the skeleton:**
 
 ```html
-<div id="plugin">
-    <div class="workarea-cropbox">
-        <div class="bg-cropbox">
-            <img class="image-cropbox">
-            <div class="membrane-cropbox"></div>
-        </div>
-        <div class="frame-cropbox">
-            <div class="resize-cropbox"></div>
-        </div>
-    </div>
-</div>
+<div id="plugin"></div>
 <input id="file-input" type="file" accept="image/*">
 <button id="btn-crop" type="button">Crop</button>
 <button id="btn-reset" type="button">Reset</button>

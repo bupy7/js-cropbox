@@ -1,3 +1,6 @@
+/**
+ * @since 0.10.0
+ */
 describe('.getVariants()', function() {
     it('should returns array', function() {
         var variants = [{

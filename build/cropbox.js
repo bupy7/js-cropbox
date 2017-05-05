@@ -12,7 +12,16 @@ window.Cropbox = (function(window, document) {
         EVENT_CB_RESET = 'cb.reset',
         EVENT_CB_DISABLED_CTRLS = 'cb.disabledCtrls',
         EVENT_CB_ENABLED_CTRLS = 'cb.enabledCtrls',
-        EVENT_CB_LOADED = 'cb.loaded';
+        EVENT_CB_LOADED = 'cb.loaded',
+        TPL = '<div class="workarea-cropbox">' +
+            '<div class="bg-cropbox">' +
+                '<img class="image-cropbox">' +
+                '<div class="membrane-cropbox"></div>' +
+            '</div>' +
+            '<div class="frame-cropbox">' +
+                '<div class="resize-cropbox"></div>' +
+            '</div>' +
+        '</div>';
 
     var publicMethods = {
         /**
@@ -126,7 +135,7 @@ window.Cropbox = (function(window, document) {
         },
         /**
          * @returns {Array}
-         * @since 0.9.2
+         * @since 0.10.0
          */
         getVariants: function() {
             return this._variants;
@@ -216,6 +225,7 @@ window.Cropbox = (function(window, document) {
             // init
             this._cb = typeof o.cb === 'string' ? document.querySelector(o.cb) : o.cb;
             this._variants = o.variants || this.dO.variants;
+            this._cb.innerHTML = TPL;
             this._image = this._cb.querySelector('.image-cropbox');
             this._frame = this._cb.querySelector('.frame-cropbox');
             this._workarea = this._cb.querySelector('.workarea-cropbox');
