@@ -158,7 +158,7 @@ cropbox.getMembrane().addEventListener(&apos;wheel&apos;, function(event){
     } else {
         cropbox.scale(0.99);
     }
-    event.preventDefault ? event.preventDefault() : (event.returnValue = false);
+    event.preventDefault();
 });
 // image loading from a file
 var fileInput = document.querySelector(&apos;input[type=&quot;file&quot;]&apos;);
@@ -180,7 +180,7 @@ cropBtn.addEventListener(&apos;click&apos;, function(){
     cropbox.crop();
 });
 // the cropped event
-cropbox.getCb().addEventListener(&apos;cb.cropped&apos;, function(event){
+cropbox.getCb().addEventListener(&apos;cb:cropped&apos;, function(event){
     // add image to the container
     var img = document.createElement(&apos;img&apos;);
     img.src = event.detail.data.image;
@@ -197,9 +197,9 @@ function resetHandler(){
     // clear information about crop
     document.querySelector(&apos;#data&apos;).value = &apos;&apos;;
 };
-cropbox.getCb().addEventListener(&apos;cb.reset&apos;, resetHandler);
+cropbox.getCb().addEventListener(&apos;cb:reset&apos;, resetHandler);
 // the loaded event
-cropbox.getCb().addEventListener(&apos;cb.loaded&apos;, resetHandler);
+cropbox.getCb().addEventListener(&apos;cb:loaded&apos;, resetHandler);
 // the disabled/enabled event
 function disabledHandler(){
     scaleInBtn.setAttribute(&apos;disabled&apos;, &apos;disabled&apos;);
@@ -207,8 +207,8 @@ function disabledHandler(){
     cropBtn.setAttribute(&apos;disabled&apos;, &apos;disabled&apos;);
 };
 disabledHandler();
-cropbox.getCb().addEventListener(&apos;cb.disabledCtrls&apos;, disabledHandler);
-cropbox.getCb().addEventListener(&apos;cb.enabledCtrls&apos;, function(){
+cropbox.getCb().addEventListener(&apos;cb:disabledCtrls&apos;, disabledHandler);
+cropbox.getCb().addEventListener(&apos;cb:enabledCtrls&apos;, function(){
     scaleInBtn.removeAttribute(&apos;disabled&apos;);
     scaleOutBtn.removeAttribute(&apos;disabled&apos;);
     cropBtn.removeAttribute(&apos;disabled&apos;);
@@ -318,7 +318,7 @@ cropbox.getCb().addEventListener(&apos;cb.enabledCtrls&apos;, function(){
                 } else {
                     cropbox.scale(0.99);
                 }
-                event.preventDefault ? event.preventDefault() : (event.returnValue = false);
+                event.preventDefault();
             });
             // image loading from a file
             var fileInput = document.querySelector('input[type="file"]');
@@ -340,7 +340,7 @@ cropbox.getCb().addEventListener(&apos;cb.enabledCtrls&apos;, function(){
                 cropbox.crop();
             });
             // the cropped event
-            cropbox.getCb().addEventListener('cb.cropped', function(event){
+            cropbox.getCb().addEventListener('cb:cropped', function(event){
                 // add image to the container
                 var img = document.createElement('img');
                 img.src = event.detail.data.image;
@@ -357,9 +357,9 @@ cropbox.getCb().addEventListener(&apos;cb.enabledCtrls&apos;, function(){
                 // clear information about crop
                 document.querySelector('#data').value = '';
             };
-            cropbox.getCb().addEventListener('cb.reset', resetHandler);
+            cropbox.getCb().addEventListener('cb:reset', resetHandler);
             // the loaded event
-            cropbox.getCb().addEventListener('cb.loaded', resetHandler);
+            cropbox.getCb().addEventListener('cb:loaded', resetHandler);
             // the disabled/enabled event
             function disabledHandler(){
                 scaleInBtn.setAttribute('disabled', 'disabled');
@@ -367,8 +367,8 @@ cropbox.getCb().addEventListener(&apos;cb.enabledCtrls&apos;, function(){
                 cropBtn.setAttribute('disabled', 'disabled');
             };
             disabledHandler();
-            cropbox.getCb().addEventListener('cb.disabledCtrls', disabledHandler);
-            cropbox.getCb().addEventListener('cb.enabledCtrls', function(){
+            cropbox.getCb().addEventListener('cb:disabledCtrls', disabledHandler);
+            cropbox.getCb().addEventListener('cb:enabledCtrls', function(){
                 scaleInBtn.removeAttribute('disabled');
                 scaleOutBtn.removeAttribute('disabled');
                 cropBtn.removeAttribute('disabled');
