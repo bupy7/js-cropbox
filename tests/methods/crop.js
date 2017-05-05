@@ -41,10 +41,10 @@ describe('.crop()', function() {
                 }
             ],
             i = 0;
-        cropbox.getCb().addEventListener('cb.loaded', function() {
+        cropbox.getCb().addEventListener('cb:loaded', function() {
             cropbox.crop();
         });
-        cropbox.getCb().addEventListener('cb.cropped', function(event) {
+        cropbox.getCb().addEventListener('cb:cropped', function(event) {
             var data = event.detail.data;
             // not test value
             delete data.image;

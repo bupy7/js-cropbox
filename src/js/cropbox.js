@@ -8,11 +8,11 @@ window.Cropbox = (function(window, document) {
         EVENT_MOUSE_UP = 'mouseup',
         EVENT_RESIZE = 'resize',
         EVENT_LOAD = 'load',
-        EVENT_CB_CROPPED = 'cb.cropped',
-        EVENT_CB_RESET = 'cb.reset',
-        EVENT_CB_DISABLED_CTRLS = 'cb.disabledCtrls',
-        EVENT_CB_ENABLED_CTRLS = 'cb.enabledCtrls',
-        EVENT_CB_LOADED = 'cb.loaded',
+        EVENT_CB_CROPPED = 'cb:cropped',
+        EVENT_CB_RESET = 'cb:reset',
+        EVENT_CB_DISABLED_CTRLS = 'cb:disabledCtrls',
+        EVENT_CB_ENABLED_CTRLS = 'cb:enabledCtrls',
+        EVENT_CB_LOADED = 'cb:loaded',
         TPL = '<div class="workarea-cropbox">' +
             '<div class="bg-cropbox">' +
                 '<img class="image-cropbox">' +

@@ -81,7 +81,7 @@ cropbox.getMembrane().addEventListener('wheel', function(event){
     } else {
         cropbox.scale(0.99);
     }
-    event.preventDefault ? event.preventDefault() : (event.returnValue = false);
+    event.preventDefault();
 });
 // image loading from a file
 var fileInput = document.querySelector('#file-input');
@@ -103,7 +103,7 @@ cropBtn.addEventListener('click', function(){
     cropbox.crop();
 });
 // the cropped event
-cropbox.getCb().addEventListener('cb.cropped', function(event){
+cropbox.getCb().addEventListener('cb:cropped', function(event){
     // add image to the container
     var img = document.createElement('img');
     img.src = event.detail.data.image;
@@ -120,9 +120,9 @@ function resetHandler(){
     // clear information about crop
     document.querySelector('#cropped-data').value = '';
 };
-cropbox.getCb().addEventListener('cb.reset', resetHandler);
+cropbox.getCb().addEventListener('cb:reset', resetHandler);
 // the loaded event
-cropbox.getCb().addEventListener('cb.loaded', resetHandler);
+cropbox.getCb().addEventListener('cb:loaded', resetHandler);
 // the disabled/enabled event
 function disabledHandler(){
     scaleInBtn.setAttribute('disabled', 'disabled');
@@ -130,8 +130,8 @@ function disabledHandler(){
     cropBtn.setAttribute('disabled', 'disabled');
 };
 disabledHandler();
-cropbox.getCb().addEventListener('cb.disabledCtrls', disabledHandler);
-cropbox.getCb().addEventListener('cb.enabledCtrls', function(){
+cropbox.getCb().addEventListener('cb:disabledCtrls', disabledHandler);
+cropbox.getCb().addEventListener('cb:enabledCtrls', function(){
     scaleInBtn.removeAttribute('disabled');
     scaleOutBtn.removeAttribute('disabled');
     cropBtn.removeAttribute('disabled');
@@ -269,7 +269,7 @@ An `Array` contain variants for cropping.
 Events
 ------
 
-### `cb.cropped`
+### `cb:cropped`
 
 The event running after to crop an image.
 
@@ -279,24 +279,24 @@ You can use it via `event` argument as `event.detail.data`.
 **Example usage:**
 
 ```js
-cropbox.getCb().addEventListener('cb.cropped', function(event){
+cropbox.getCb().addEventListener('cb:cropped', function(event){
     console.log(event.detail.data);
 });
 ```
 
-### `cb.reset`
+### `cb:reset`
 
 The event running after to reset crop history.
 
-### `cb.disabledCtrls`
+### `cb:disabledCtrls`
 
 The event running after to disable controls.
 
-### `cb.enabledCtrls`
+### `cb:enabledCtrls`
 
 The event running after to enable controls.
 
-### `cb.loaded`
+### `cb:loaded`
 
 The event running after to load an image.
 

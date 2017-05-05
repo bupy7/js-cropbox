@@ -8,14 +8,14 @@ describe('.scale(step)', function() {
                 }
             ]
         });
-        cropbox.getCb().addEventListener('cb.loaded', function() {
+        cropbox.getCb().addEventListener('cb:loaded', function() {
             for (var i = 0; i !== 2; i++) {
                 cropbox.scale(1.05);
             }
             cropbox.scale(0.95);
             cropbox.crop();
         });
-        cropbox.getCb().addEventListener('cb.cropped', function(event) {
+        cropbox.getCb().addEventListener('cb:cropped', function(event) {
             var data = event.detail.data;
             // not test value
             delete data.image;
