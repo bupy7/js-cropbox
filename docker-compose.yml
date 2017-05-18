@@ -1,0 +1,8 @@
+version: '3'
+services:
+    ext:
+        build: .
+        volumes:
+            - .:/src
+        command: npm install
+            

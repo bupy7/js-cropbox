@@ -1,6 +1,11 @@
 js-cropbox
 ==========
 
+0.11.1 [?]
+----------
+
+- [Add]: Docker development environment.
+
 0.11.0 [2017-05-05]
 -------------------
 
