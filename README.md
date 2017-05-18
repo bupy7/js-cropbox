@@ -300,6 +300,37 @@ The event running after to enable controls.
 
 The event running after to load an image.
 
+Build
+-----
+
+### Using Docker
+
+Run dev environment:
+
+```
+docker-compose up
+```
+
+Run Grunt:
+
+```
+docker-compose run --rm ext npm run build
+```
+
+### Locale dev environment
+
+```
+npm install
+npm run build
+```
+
+Run tests
+---------
+
+```
+npm run test
+```
+
 License
 -------
 

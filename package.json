@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/bupy7/js-cropbox",
   "scripts": {
+    "build": "node_modules/.bin/grunt",
     "test": "node_modules/.bin/grunt karma:ci"
   },
   "devDependencies": {

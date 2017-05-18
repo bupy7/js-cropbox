@@ -5,6 +5,7 @@ js-cropbox
 ----------
 
 - [Add]: Docker development environment.
+- [Add]: Instruction for build and run tests.
 
 0.11.0 [2017-05-05]
 -------------------
