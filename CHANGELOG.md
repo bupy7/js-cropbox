@@ -8,7 +8,7 @@ js-cropbox
 - [Add]: Instruction for build and run tests.
 - [Add]: The `cb:started` event.
 - [Del]: The `cb:loaded` event.
-- [Fix]: Tests.
+- [Fix]: Tests files.
 - [Fix]: Example in README.md.
 - [Fix#8]: Image caching.
 
