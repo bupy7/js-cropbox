@@ -317,7 +317,7 @@ Run Grunt:
 docker-compose run --rm ext npm run build
 ```
 
-### Locale dev environment
+### Using locale dev environment
 
 ```
 npm install
@@ -326,6 +326,14 @@ npm run build
 
 Run tests
 ---------
+
+### Using Docker
+
+```
+docker-compose run --rm ext npm run test
+```
+
+### Using locale dev environment
 
 ```
 npm run test
