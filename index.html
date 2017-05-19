@@ -167,6 +167,8 @@ fileInput.addEventListener(&apos;change&apos;, function(){
     fileReader.readAsDataURL(this.files[0]);
     fileReader.addEventListener(&apos;load&apos;, function(event){
         cropbox.load(event.target.result);
+        // disable caching for Chrome and Safari
+        fileInput.value = null;
     });
 });
 // reset
@@ -198,8 +200,8 @@ function resetHandler(){
     document.querySelector(&apos;#data&apos;).value = &apos;&apos;;
 };
 cropbox.getCb().addEventListener(&apos;cb:reset&apos;, resetHandler);
-// the loaded event
-cropbox.getCb().addEventListener(&apos;cb:loaded&apos;, resetHandler);
+// the ready event
+cropbox.getCb().addEventListener(&apos;cb:ready&apos;, resetHandler);
 // the disabled/enabled event
 function disabledHandler(){
     scaleInBtn.setAttribute(&apos;disabled&apos;, &apos;disabled&apos;);
@@ -327,6 +329,8 @@ cropbox.getCb().addEventListener(&apos;cb:enabledCtrls&apos;, function(){
                 fileReader.readAsDataURL(this.files[0]);
                 fileReader.addEventListener('load', function(event){
                     cropbox.load(event.target.result);
+                    // disable caching for Chrome and Safari
+                    fileInput.value = null;
                 });
             });
             // reset
@@ -358,8 +362,8 @@ cropbox.getCb().addEventListener(&apos;cb:enabledCtrls&apos;, function(){
                 document.querySelector('#data').value = '';
             };
             cropbox.getCb().addEventListener('cb:reset', resetHandler);
-            // the loaded event
-            cropbox.getCb().addEventListener('cb:loaded', resetHandler);
+            // the ready event
+            cropbox.getCb().addEventListener('cb:ready', resetHandler);
             // the disabled/enabled event
             function disabledHandler(){
                 scaleInBtn.setAttribute('disabled', 'disabled');
