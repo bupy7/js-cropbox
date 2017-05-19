@@ -41,7 +41,7 @@ describe('.crop()', function() {
                 }
             ],
             i = 0;
-        cropbox.getCb().addEventListener('cb:loaded', function() {
+        cropbox.getCb().addEventListener('cb:ready', function() {
             cropbox.crop();
         });
         cropbox.getCb().addEventListener('cb:cropped', function(event) {

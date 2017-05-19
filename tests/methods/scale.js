@@ -8,7 +8,7 @@ describe('.scale(step)', function() {
                 }
             ]
         });
-        cropbox.getCb().addEventListener('cb:loaded', function() {
+        cropbox.getCb().addEventListener('cb:ready', function() {
             for (var i = 0; i !== 2; i++) {
                 cropbox.scale(1.05);
             }

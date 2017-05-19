@@ -2,7 +2,7 @@ window.Cropbox = (function(window, document) {
     'use strict';
 
     // const
-    var VERSION = '0.9.0',
+    var VERSION = '0.12.0',
         EVENT_MOUSE_DOWN = 'mousedown',
         EVENT_MOUSE_MOVE = 'mousemove',
         EVENT_MOUSE_UP = 'mouseup',
@@ -12,7 +12,10 @@ window.Cropbox = (function(window, document) {
         EVENT_CB_RESET = 'cb:reset',
         EVENT_CB_DISABLED_CTRLS = 'cb:disabledCtrls',
         EVENT_CB_ENABLED_CTRLS = 'cb:enabledCtrls',
-        EVENT_CB_LOADED = 'cb:loaded',
+        /**
+         * @since 0.12.0
+         */
+        EVENT_CB_READY = 'cb:ready',
         TPL = '<div class="workarea-cropbox">' +
             '<div class="bg-cropbox">' +
                 '<img class="image-cropbox">' +
@@ -37,7 +40,11 @@ window.Cropbox = (function(window, document) {
          * @param {String} src
          */
         load: function(src) {
-            this._sourceImage.src = src;
+            if (this._sourceImage.src === src) {
+                this._start();
+            } else {
+                this._sourceImage.src = src;
+            }
         },
         reset: function() {
             this._disableControls();
@@ -417,6 +424,7 @@ window.Cropbox = (function(window, document) {
             this._initImage();
             this._initFrame();
             this._enableControls();
+            this._customTrigger(EVENT_CB_READY);
         },
         _stop: function() {
             this._disableControls();
@@ -448,11 +456,10 @@ window.Cropbox = (function(window, document) {
     var events = {
         _attachLoadEvent: function() {
             var self = this;
+            this._image.addEventListener(EVENT_LOAD, function() {
+                self._start();
+            });
             this._sourceImage.addEventListener(EVENT_LOAD, function() {
-                self._image.addEventListener(EVENT_LOAD, function() {
-                    self._start();
-                    self._customTrigger(EVENT_CB_LOADED);
-                });
                 self._image.src = this.src;
             });
         },

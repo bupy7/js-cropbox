@@ -1,7 +1,7 @@
 describe('.reset()', function() {
     it('should reset', function(done) {
         var cropbox = new Cropbox('#plugin');
-        cropbox.getCb().addEventListener('cb:loaded', function() {
+        cropbox.getCb().addEventListener('cb:ready', function() {
             cropbox.crop();
         });
         cropbox.getCb().addEventListener('cb:cropped', function() {

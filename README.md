@@ -90,6 +90,8 @@ fileInput.addEventListener('change', function(){
     fileReader.readAsDataURL(this.files[0]);
     fileReader.addEventListener('load', function(event){
         cropbox.load(event.target.result);
+        // disable caching for Chrome and Safari
+        fileInput.value = null;
     });
 });
 // reset
@@ -121,8 +123,8 @@ function resetHandler(){
     document.querySelector('#cropped-data').value = '';
 };
 cropbox.getCb().addEventListener('cb:reset', resetHandler);
-// the loaded event
-cropbox.getCb().addEventListener('cb:loaded', resetHandler);
+// the ready event
+cropbox.getCb().addEventListener('cb:ready', resetHandler);
 // the disabled/enabled event
 function disabledHandler(){
     scaleInBtn.setAttribute('disabled', 'disabled');
@@ -296,9 +298,9 @@ The event running after to disable controls.
 
 The event running after to enable controls.
 
-### `cb:loaded`
+### `cb:ready`
 
-The event running after to load an image.
+The event running when the crop to ready image cropping.
 
 Build
 -----

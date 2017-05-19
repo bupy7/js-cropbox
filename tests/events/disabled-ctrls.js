@@ -4,7 +4,7 @@ describe('onCbDisabledCtrls', function() {
         cropbox.getCb().addEventListener('cb:disabledCtrls', function() {
             done();
         });
-        cropbox.getCb().addEventListener('cb:loaded', function() {
+        cropbox.getCb().addEventListener('cb:ready', function() {
             cropbox.reset();
         });
         cropbox.load('assets/image.png');

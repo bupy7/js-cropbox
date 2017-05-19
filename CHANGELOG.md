@@ -1,11 +1,16 @@
 js-cropbox
 ==========
 
-0.11.1 [?]
-----------
+0.12.0 [2017-05-19]
+-------------------
 
 - [Add]: Docker development environment.
 - [Add]: Instruction for build and run tests.
+- [Add]: The `cb:started` event.
+- [Del]: The `cb:loaded` event.
+- [Fix]: Tests.
+- [Fix]: Example in README.md.
+- [Fix#8]: Image caching.
 
 0.11.0 [2017-05-05]
 -------------------
