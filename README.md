@@ -39,6 +39,7 @@ Usage
 <div id="plugin"></div>
 <input id="file-input" type="file" accept="image/*">
 <button id="btn-crop" type="button">Crop</button>
+<button id="btn-start" type="button">Start</button>
 <button id="btn-reset" type="button">Reset</button>
 <button id="btn-scale-out" type="button">-</button>
 <button id="btn-scale-in" type="button">+</button>
@@ -84,14 +85,13 @@ cropbox.getMembrane().addEventListener('wheel', function(event){
     event.preventDefault();
 });
 // image loading from a file
-var fileInput = document.querySelector('#file-input');
-fileInput.addEventListener('change', function(){
+var fileInput = document.querySelector('#file-input'),
+    startBtn = document.querySelector('#btn-start');
+startBtn.addEventListener('click', function(){
     var fileReader = new FileReader();
-    fileReader.readAsDataURL(this.files[0]);
+    fileReader.readAsDataURL(fileInput.files[0]);
     fileReader.addEventListener('load', function(event){
         cropbox.load(event.target.result);
-        // disable caching for Chrome and Safari
-        fileInput.value = null;
     });
 });
 // reset

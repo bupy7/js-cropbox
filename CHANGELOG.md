@@ -1,12 +1,18 @@
 js-cropbox
 ==========
 
+0.12.1 [2017-05-22]
+-------------------
+
+- [Fix#9]: CHANGELOG.md.
+- [Fix]: README.md
+
 0.12.0 [2017-05-19]
 -------------------
 
 - [Add]: Docker development environment.
 - [Add]: Instruction for build and run tests.
-- [Add]: The `cb:started` event.
+- [Add]: The `cb:ready` event.
 - [Del]: The `cb:loaded` event.
 - [Fix]: Tests files.
 - [Fix]: Example in README.md.
