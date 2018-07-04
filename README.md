@@ -3,6 +3,8 @@ js-cropbox
 
 [![Build Status](https://travis-ci.org/bupy7/js-cropbox.svg?branch=master)](https://travis-ci.org/bupy7/js-cropbox)
 [![Coverage Status](https://coveralls.io/repos/github/bupy7/js-cropbox/badge.svg?branch=master)](https://coveralls.io/github/bupy7/js-cropbox?branch=master)
+[![npm](https://img.shields.io/npm/dt/js-cropbox.svg)](https://www.npmjs.com/package/js-cropbox)
+
 
 A lightweight and simple js extension to crop your image.
 
